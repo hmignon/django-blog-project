@@ -3,26 +3,13 @@ __pycache__/
 
 # Unit test / coverage reports
 htmlcov/
-.tox/
-.nox/
 .coverage
-.coverage.*
-.cache
-nosetests.xml
 coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
 .pytest_cache/
 
 # Django stuff:
 *.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
+blog_project.sqlite3
 
 # Environments
 .env
@@ -30,3 +17,6 @@ env/
 
 # PyCharm
 .idea/
+
+# Dev
+notes.txt

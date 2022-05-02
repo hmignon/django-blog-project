@@ -14,14 +14,14 @@ def post_list(request):
     return render(request, 'blog/post_list.html', context)
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, id=pk)
+def post_detail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     if post and post.visible is False:
         raise PermissionDenied()
 
     context = {
         "post": post,
-        'title': f"{post.title}"
+        'title': f"{post.headline}"
     }
 
     return render(request, 'blog/post_detail.html', context)

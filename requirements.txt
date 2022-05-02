@@ -3,6 +3,7 @@ Django==4.0.4
 django-environ==0.8.1
 flake8==4.0.1
 mccabe==0.6.1
+Pillow==9.1.0
 pycodestyle==2.8.0
 pyflakes==2.4.0
 sqlparse==0.4.2
