@@ -37,14 +37,15 @@ class Product(models.Model):
     colors = models.ManyToManyField(Color)
     in_stock = models.PositiveIntegerField()
     album = models.OneToOneField(ImageAlbum, related_name='album', on_delete=models.CASCADE)
-    slug = models.SlugField(max_length=255, unique=True)
+    visible = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=255, unique=True, default='slug')
 
     def __str__(self):
         return f"Product #{self.id}: {self.name}"
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(rand_slug() + "_" + self.name)
+            self.slug = slugify(self.name)
 
         is_new = True if not self.id else False
         super(Product, self).save(*args, **kwargs)

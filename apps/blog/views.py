@@ -8,14 +8,14 @@ def post_list(request):
     posts = Post.objects.filter(visible=True)
     context = {
         'posts': posts,
-        'title': "Blog Feed"
+        'title': "Feed"
     }
 
-    return render(request, 'blog/post_list.html', context)
+    return render(request, 'blog/blog_feed.html', context)
 
 
-def post_detail(request, slug):
-    post = get_object_or_404(Post, slug=slug)
+def post_detail(request, slug, pk=None):
+    post = get_object_or_404(Post, pk=pk)
     if post and post.visible is False:
         raise PermissionDenied()
 
