@@ -7,9 +7,11 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.timezone import now
 
+from . import utils
+
 
 def path_and_rename(instance, filename):
-    upload_to = 'media/blog/'
+    upload_to = 'blog/'
     ext = filename.split('.')[-1]
     if instance.pk:
         filename = f"{instance.pk}-{instance.name}.{ext}"
@@ -19,39 +21,25 @@ def path_and_rename(instance, filename):
     return os.path.join(upload_to, filename)
 
 
-class ImageAlbum(models.Model):
-    name = models.CharField(max_length=255)
-
-    def default(self):
-        return self.images.filter(default=True).first()
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class Image(models.Model):
-    name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to=path_and_rename)
-    album = models.ForeignKey(ImageAlbum, on_delete=models.CASCADE, related_name='images')
-    default = models.BooleanField(default=False)
-    slug = models.SlugField(max_length=100, unique=True, default='slug')
-
-    def __str__(self):
-        return f"{self.name} ({self.album})"
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Image, self).save(*args, **kwargs)
-
-
 class Category(models.Model):
     name = models.CharField(max_length=20)
+    slug = models.SlugField(max_length=255, unique=True, default='slug')
 
     class Meta:
         verbose_name_plural = "categories"
 
     def __str__(self):
         return f"{self.name}"
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog:category', kwargs={"slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
 
 
 class Tag(models.Model):
@@ -66,8 +54,12 @@ class Post(models.Model):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     headline = models.CharField(max_length=255)
     tags = models.ManyToManyField(Tag)
+    summary = models.CharField(max_length=200, null=True, blank=True)
     body = models.TextField()
-    album = models.OneToOneField(ImageAlbum, related_name='album', on_delete=models.CASCADE, default=None)
+    image1 = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
+    image2 = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
+    image3 = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
+    reading_time = models.PositiveIntegerField(default=1)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(default=None)
@@ -88,20 +80,14 @@ class Post(models.Model):
             self.date_published = now()
         else:
             self.date_published = None
+
         self.slug = slugify(self.headline)
+        self.reading_time = utils.get_reading_time(self.body)
 
-        is_new = True if not self.id else False
+        if not self.summary:
+            self.summary = self.body[:200]
+
         super(Post, self).save(*args, **kwargs)
-
-        if is_new:
-            album = ImageAlbum(name=self.headline)
-            album.save()
-            self.album = album
-            self.save()
-        else:
-            album = ImageAlbum.objects.get(id=self.album_id)
-            album.name = self.headline
-            album.save()
 
 
 class Comment(models.Model):

@@ -1,12 +1,20 @@
-import random
-import string
+import os
+from uuid import uuid4
 
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
-def rand_slug():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+def path_and_rename(instance, filename):
+    upload_to = 'shop/'
+    ext = filename.split('.')[-1]
+    if instance.pk:
+        filename = f"{instance.pk}-{instance.name}.{ext}"
+    else:
+        filename = f"{uuid4().hex}.{ext}"
+
+    return os.path.join(upload_to, filename)
 
 
 class Color(models.Model):
@@ -26,9 +34,17 @@ class ImageAlbum(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='media/shop/')
+    image = models.ImageField(upload_to=path_and_rename)
     album = models.ForeignKey(ImageAlbum, on_delete=models.CASCADE, related_name='images')
     default = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=100, unique=True, default='slug')
+
+    def __str__(self):
+        return f"{self.name} ({self.album})"
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Image, self).save(*args, **kwargs)
 
 
 class Product(models.Model):
@@ -42,6 +58,12 @@ class Product(models.Model):
 
     def __str__(self):
         return f"Product #{self.id}: {self.name}"
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:detail', kwargs={"pk": self.id, "slug": self.slug})
 
     def save(self, *args, **kwargs):
         if not self.slug:

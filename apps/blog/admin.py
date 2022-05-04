@@ -1,9 +1,8 @@
 from django.contrib import admin
 
-from .models import Tag, Post, Image, ImageAlbum, Category
+from .models import Tag, Post, Category, Comment
 
 admin.site.register(Tag)
 admin.site.register(Post)
-admin.site.register(Image)
-admin.site.register(ImageAlbum)
 admin.site.register(Category)
+admin.site.register(Comment)

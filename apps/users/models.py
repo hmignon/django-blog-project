@@ -4,6 +4,9 @@ from django.db import models
 
 class User(AbstractUser):
     role = models.CharField(max_length=50)
+    summary = models.CharField(max_length=255, null=True, blank=True)
+    bio = models.TextField(null=True, blank=True)
+    picture = models.ImageField(upload_to='users/', default='default.jpg')
 
 
 class Subscriber(models.Model):
