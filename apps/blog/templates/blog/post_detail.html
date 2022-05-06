@@ -2,16 +2,18 @@
 {% load static %}
 {% block content %}
 
-  <div class="row g-5 mt-3">
+  {% include "blog/blog_nav.html" %}
+
+  <div class="row g-5 mt-0">
     <div class="col-md-8">
       <article class="blog-post">
-        <h2 class="blog-post-title">{{ post.headline }}</h2>
         <p class="blog-post-meta">{{ post.date_published | date:"F d, Y" }} by
           <a href="#">{{ post.author }}</a>
           - {{ post.reading_time }} min read
-          <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-            class="bi bi-share-fill"></i></button>
-        <p>{{ post.body }}</p>
+          <a type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="bi bi-share-fill"></i></a></p>
+        <h2 class="blog-post-title">{{ post.headline }}</h2>
+        <p>{{ post.body | safe }}</p>
         <hr>
       </article>
       <h4>Comments</h4>

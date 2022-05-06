@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +130,25 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'blog:list'
+
+# Ckeditor configuration
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_RESTRICT_BY_DATE = False
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'height': 800,
+        'toolbar_Custom': [
+            ['RemoveFormat', 'Source'],
+            ['Format'],
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+            ['Link', 'Unlink'],
+            ['Image', 'Iframe', 'Table', 'SpecialChar']
+        ]
+    }
+}

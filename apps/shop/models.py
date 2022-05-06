@@ -37,7 +37,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to=path_and_rename)
     album = models.ForeignKey(ImageAlbum, on_delete=models.CASCADE, related_name='images')
     default = models.BooleanField(default=False)
-    slug = models.SlugField(max_length=100, unique=True, default='slug')
+    slug = models.SlugField(max_length=100, unique=True, default='')
 
     def __str__(self):
         return f"{self.name} ({self.album})"

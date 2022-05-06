@@ -86,12 +86,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .blog-post-title {
     font-size: 2.5rem;
-    margin-bottom: .25rem;
+    margin-bottom: 1rem;
 }
 
 .blog-post-meta {
     color: #727272;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+article img {
+    display: block;
+    margin: 1.5rem auto 2rem auto;
+    max-width: 100%;
 }
 
 /*

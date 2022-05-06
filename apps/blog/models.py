@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
 
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -55,16 +56,14 @@ class Post(models.Model):
     headline = models.CharField(max_length=255)
     tags = models.ManyToManyField(Tag)
     summary = models.CharField(max_length=200, null=True, blank=True)
-    body = models.TextField()
-    image1 = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
-    image2 = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
-    image3 = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
+    # body = models.TextField()
+    body = RichTextUploadingField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(default=1)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(default=None)
     visible = models.BooleanField(default=False)
-    slug = models.SlugField(max_length=255, unique=True, default='slug')
+    slug = models.SlugField(max_length=255, unique=True, default='')
 
     def __str__(self):
         return f"Post #{self.id}: {self.headline}"

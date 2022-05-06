@@ -20,8 +20,8 @@ def post_list(request):
     return render(request, 'blog/blog_list.html', context)
 
 
-def posts_by_category(request, pk):
-    category = Category.objects.get(pk=pk)
+def posts_by_category(request, slug):
+    category = Category.objects.get(slug=slug)
     filtered_posts = Post.objects.filter(tags__category=category, visible=True).order_by('-date_published')
     context = {
         'posts': filtered_posts,
@@ -45,6 +45,8 @@ def post_detail(request, slug, pk=None):
         "post": post,
         "comments": comments,
         "replies": replies,
+        'qod': QUOTE_OF_THE_DAY,
+        'categories': Category.objects.all(),
         'title': f"{post.headline}"
     }
 
