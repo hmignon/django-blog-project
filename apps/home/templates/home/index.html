@@ -12,8 +12,9 @@
 
   </style>
 
-  <div class="p-4 p-md-5 mb-4 mt-4 text-white bg-dark">
-    <div class="col-md-6 px-0">
+  <div class="p-4 p-md-5 mb-4 mt-4 text-white bg-dark"
+       style="background-image: url({{ featured.cover.url }}); background-size: cover;">
+    <div class="col-md-6 px-0" style="text-shadow: black 1px 0 10px;">
       <h1 class="display-4 fst-italic">{{ featured.headline }}</h1>
       <p class="lead my-3">{{ featured.summary }}...</p>
       <p class="lead mb-0"><a href="{{ featured.get_absolute_url }}" class="text-white fw-bold">Continue
@@ -21,6 +22,8 @@
       </p>
     </div>
   </div>
+
+
 
   <div class="mb-5 d-flex justify-content-between">
     <div class="row row-cols-1 row-cols-md-3 g-1">

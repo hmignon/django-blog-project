@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
 
+from PIL import ImageOps, Image
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.db import models
@@ -15,7 +16,7 @@ def path_and_rename(instance, filename):
     upload_to = 'blog/'
     ext = filename.split('.')[-1]
     if instance.pk:
-        filename = f"{instance.pk}-{instance.name}.{ext}"
+        filename = f"{instance.pk}-{instance.headline}.{ext}"
     else:
         filename = f"{uuid4().hex}.{ext}"
 
@@ -54,9 +55,9 @@ class Tag(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     headline = models.CharField(max_length=255)
+    cover = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
     tags = models.ManyToManyField(Tag)
     summary = models.CharField(max_length=200, null=True, blank=True)
-    # body = models.TextField()
     body = RichTextUploadingField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(default=1)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -75,16 +76,26 @@ class Post(models.Model):
         return reverse('blog:detail', kwargs={"pk": self.id, "slug": self.slug})
 
     def save(self, *args, **kwargs):
-        if self.visible is True:
-            self.date_published = now()
-        else:
-            self.date_published = None
-
+        super().save()
         self.slug = slugify(self.headline)
         self.reading_time = utils.get_reading_time(self.body)
 
         if not self.summary:
             self.summary = self.body[:200]
+
+        if self.visible is True:
+            self.date_published = now()
+        else:
+            self.date_published = None
+
+        if self.cover:
+            img = ImageOps.contain(
+                Image.open(self.cover.path),
+                (1200, 1200),
+                method=3
+            )
+
+            img.save(self.cover.path)
 
         super(Post, self).save(*args, **kwargs)
 
@@ -99,7 +110,11 @@ class Comment(models.Model):
 
 
 class Reply(models.Model):
-    author = models.CharField(max_length=24)
+    author_name = models.CharField(max_length=24)
+    author_email = models.EmailField()
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     content = models.CharField(max_length=1024)
     date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "replies"

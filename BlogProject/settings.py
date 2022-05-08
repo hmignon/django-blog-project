@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'apps.blog.apps.BlogConfig',
     'apps.users.apps.UsersConfig',
     'apps.shop.apps.ShopConfig',
+    'apps.dashboard.apps.DashboardConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'ckeditor_uploader',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +154,5 @@ CKEDITOR_CONFIGS = {
         ]
     }
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

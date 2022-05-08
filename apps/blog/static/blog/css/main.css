@@ -3,11 +3,11 @@ body {
 }
 
 a {
-    color: #e76a87;
+    color: #2d9c9f;
 }
 
 a:hover {
-    color: #e76a87;
+    color: #2d9c9f;
     font-weight: bold;
 }
 
@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-scroller .nav a:hover {
-    color: #e76a87;
+    color: #2d9c9f;
 }
 
 @media (min-width: 768px) {
@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-title:hover {
-    color: #e76a87;
+    color: #2d9c9f;
 }
 
 /* Pagination */
@@ -81,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
  * Blog posts
  */
 .blog-post {
-    margin-bottom: 4rem;
+    margin-bottom: 2.5rem;
 }
 
 .blog-post-title {
