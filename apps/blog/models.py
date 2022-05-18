@@ -62,7 +62,7 @@ class Post(models.Model):
     reading_time = models.PositiveIntegerField(default=1)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    date_published = models.DateTimeField(default=None)
+    date_published = models.DateTimeField(default=None, null=True)
     visible = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, unique=True, default='')
 
@@ -76,10 +76,9 @@ class Post(models.Model):
         return reverse('blog:detail', kwargs={"pk": self.id, "slug": self.slug})
 
     def save(self, *args, **kwargs):
-        super().save()
         self.slug = slugify(self.headline)
         self.reading_time = utils.get_reading_time(self.body)
-        self.body = utils.set_html_classes(self.body)
+        self.body = utils.cleanup_body_html(self.body)
 
         if not self.summary:
             self.summary = self.body[:200]

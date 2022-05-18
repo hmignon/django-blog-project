@@ -22,13 +22,20 @@ def get_reading_time(text: str):
     return reading_time
 
 
-def set_html_classes(html):
+def cleanup_body_html(html):
     """
     Set Bootstrap classes to html elements in ckeditor output
+    Remove automatic style attributes to img
     """
     soup = BeautifulSoup(html, "html.parser")
 
     for table in soup.select("table"):
         table["class"] = "table"
+
+    for blockquote in soup.select('blockquote'):
+        blockquote["class"] = "blockquote"
+
+    for img in soup.select('img'):
+        del img["style"]
 
     return str(soup)
