@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 
 
 def quote_of_the_day():
@@ -12,7 +13,22 @@ def quote_of_the_day():
 
 
 def get_reading_time(text: str):
+    """
+    Returns blog post reading time
+    """
     word_count = len(text.split())
     reading_time = round(word_count / 200)
 
     return reading_time
+
+
+def set_html_classes(html):
+    """
+    Set Bootstrap classes to html elements in ckeditor output
+    """
+    soup = BeautifulSoup(html, "html.parser")
+
+    for table in soup.select("table"):
+        table["class"] = "table"
+
+    return str(soup)

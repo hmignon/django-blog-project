@@ -69,6 +69,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Pagination */
+
 .blog-pagination {
     margin-bottom: 4rem;
 }
@@ -77,9 +78,8 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 2rem;
 }
 
-/*
- * Blog posts
- */
+/* Blog posts */
+
 .blog-post {
     margin-bottom: 2.5rem;
 }
@@ -100,9 +100,9 @@ article img {
     max-width: 100%;
 }
 
-/*
- * Footer
- */
+
+/* Footer */
+
 .blog-footer {
     background-color: #f9f9f9;
     border-top: .05rem solid #e5e5e5;

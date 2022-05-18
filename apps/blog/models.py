@@ -79,6 +79,7 @@ class Post(models.Model):
         super().save()
         self.slug = slugify(self.headline)
         self.reading_time = utils.get_reading_time(self.body)
+        self.body = utils.set_html_classes(self.body)
 
         if not self.summary:
             self.summary = self.body[:200]
@@ -107,6 +108,7 @@ class Comment(models.Model):
     subscribe = models.BooleanField(default=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+    moderated = models.BooleanField(default=False)
 
 
 class Reply(models.Model):
@@ -115,6 +117,7 @@ class Reply(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     content = models.CharField(max_length=1024)
     date_created = models.DateTimeField(auto_now_add=True)
+    moderated = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "replies"

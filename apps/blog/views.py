@@ -40,7 +40,7 @@ def post_detail(request, slug, pk=None):
     post = get_object_or_404(Post, pk=pk)
     if post and post.visible is False:
         raise PermissionDenied()
-    comments = Comment.objects.filter(post=post)
+    comments = Comment.objects.filter(post=post, moderated=True)
     replies = Reply.objects.filter(comment__in=comments)
 
     if request.method == 'POST':
