@@ -2,31 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
 from .forms import CommentForm, ReplyForm
-from .models import BlogPost, Category, Comment, Reply
-
-
-def post_list(request):
-    posts = BlogPost.objects.all()
-    context = {
-        'posts': posts,
-        'categories': Category.objects.all(),
-        'title': "Blog"
-    }
-
-    return render(request, 'blog/blog_list.html', context)
-
-
-def posts_by_category(request, slug):
-    category = Category.objects.get(slug=slug)
-    filtered_posts = BlogPost.objects.filter(tags__category=category, visible=True)
-    context = {
-        'posts': filtered_posts,
-        'featured': filtered_posts.first(),
-        'categories': Category.objects.all(),
-        'title': f"{category.name.title()}"
-    }
-
-    return render(request, 'blog/blog_list.html', context)
+from .models import BlogPost, Comment, Reply
 
 
 def post_detail(request, slug, pk=None):
@@ -69,7 +45,7 @@ def post_detail(request, slug, pk=None):
         "post": post,
         "comments": comments,
         "replies": replies,
-        'categories': Category.objects.all(),
+        'categories': '',
         'title': f"{post.title}"
     }
 

@@ -1,7 +1,10 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from modelcluster.fields import ParentalKey
+from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin
 from wagtail.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.models import Page
@@ -9,33 +12,34 @@ from wagtail.models import Page
 from . import utils
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=20)
-    slug = models.SlugField(max_length=255, unique=True, default='slug')
+class BlogListingPage(RoutablePageMixin, Page):
+    """Listing page lists all the Blog Detail Pages."""
 
-    class Meta:
-        verbose_name_plural = "categories"
+    template = "blog/blog_list.html"
+    max_count = 1
 
-    def __str__(self):
-        return f"{self.name}"
+    content_panels = Page.content_panels
 
-    def __unicode__(self):
-        return self.name
+    def get_context(self, request, *args, **kwargs):
+        """Adding custom stuff to our context."""
+        context = super().get_context(request, *args, **kwargs)
+        # Get all posts
+        all_posts = BlogPost.objects.live().public().order_by('-first_published_at')
 
-    def get_absolute_url(self):
-        return reverse('blog:category', kwargs={"slug": self.slug})
+        if request.GET.get('tag', None):
+            tags = request.GET.get('tag')
+            all_posts = all_posts.filter(tags__slug__in=[tags])
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
+        context["posts"] = all_posts
+        return context
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=20)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.name} ({self.category})"
+class BlogPostTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'BlogPost',
+        related_name='tagged_items',
+        on_delete=models.CASCADE,
+    )
 
 
 class BlogPost(Page):
@@ -48,16 +52,17 @@ class BlogPost(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    tags = models.ManyToManyField(Tag)
-    summary = models.CharField(max_length=200, null=True, blank=True)
+    summary = models.CharField(max_length=255, null=True, blank=True)
     body = RichTextField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(default=1)
+    tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('owner'),
         FieldPanel('summary'),
         ImageChooserPanel('cover_image'),
         FieldPanel('body'),
+        FieldPanel('tags'),
     ]
 
     class Meta:

@@ -1,13 +1,19 @@
 from django.shortcuts import render
 
-from apps.blog.models import BlogPost, Category
+from apps.blog.models import BlogPost
+from apps.users.models import User
 
 
 def index(request):
-    featured_post = BlogPost.objects.first()
+    all_posts = BlogPost.objects.all().order_by('-first_published_at')
+    featured_post = all_posts.first()
+    posts = all_posts.exclude(id=featured_post.id)
+
     context = {
         'featured': featured_post,
-        'categories': Category.objects.all(),
+        'posts': all_posts,
+        'categories': '',
+        'owner': User.objects.first(),
         'title': "Home"
     }
 
@@ -19,4 +25,5 @@ def contact(request):
 
 
 def about(request):
-    return render(request, 'home/about.html')
+    context = {'user': User.objects.first()}
+    return render(request, 'home/about.html', context)

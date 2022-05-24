@@ -1,20 +1,10 @@
 {% extends "base.html" %}
 {% load static wagtailimages_tags %}
 {% block content %}
-  <style>
-      .bd-placeholder-img {
-          font-size: 1.125rem;
-          text-anchor: middle;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          user-select: none;
-      }
-
-  </style>
 
   {% image featured.cover_image width-1500 as img %}
 
-  <div class="p-4 p-md-5 mb-4 mt-4 text-white bg-dark"
+  <div class="p-4 p-md-5 mb-2 mt-4 text-white bg-dark"
        style="background-image: url({{ img.url }}); background-size: cover;">
     <div class="col-md-6 px-0" style="text-shadow: black 1px 0 10px;">
       <h1 class="display-4 fst-italic">{{ featured.title }}</h1>
@@ -25,101 +15,70 @@
     </div>
   </div>
 
+  <div class="row g-5 mt-1">
+    <div class="col-md-8 mb-5">
 
+      <h5 class="home-subtitle text-center text-secondary mb-3"><span>Latest blog posts</span></h5>
 
-  <div class="mb-5 d-flex justify-content-between">
-    <div class="row row-cols-1 row-cols-md-3 g-1">
-      <div class="col">
-        <div class="card">
-          <svg class="bd-placeholder-img" height="220" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for post in posts %}
+          <div class="col">
+            <div class="card">
+              {% if post.cover_image %}
+                {% image post.cover_image fill-500x350 as img %}
+                <img src="{{ img.url }}" class="card-img-top" alt="{{ post.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title"><a class="text-dark" href="{{ post.url }}">{{ post.title }}</a></h5>
+                <p class="card-text">{{ post.summary }}</p>
+                <p class="card-text"><small class="text-muted">{{ post.last_published_at | date:"F d, Y" }}</small></p>
+              </div>
+            </div>
           </div>
-        </div>
+        {% endfor %}
       </div>
-      <div class="col">
-        <div class="card">
-          <svg class="bd-placeholder-img" height="220" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
+    </div>
+
+    <div class="col-md-4">
+      <p class="home-subtitle text-center text-secondary"><span>About me</span></p>
+      <div style="top: 2rem;">
+        <div class="p-4 mb-3 bg-light rounded">
+          <div class="mx-auto text-center mb-3">
+            <img src="{{ owner.picture.url }}"
+                 width="200" height="200" class="rounded-circle" alt="{{ owner.username }} profile picture">
           </div>
+          <p class="mb-0">{{ owner.summary }}</p>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <svg class="bd-placeholder-img" height="220" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
-          </div>
+
+        <div class="p-4">
+          <h4 class="fst-italic">Archives</h4>
+          <ol class="list-unstyled mb-0">
+            <li><a href="#">March 2021</a></li>
+            <li><a href="#">February 2021</a></li>
+            <li><a href="#">January 2021</a></li>
+            <li><a href="#">December 2020</a></li>
+            <li><a href="#">November 2020</a></li>
+            <li><a href="#">October 2020</a></li>
+            <li><a href="#">September 2020</a></li>
+            <li><a href="#">August 2020</a></li>
+            <li><a href="#">July 2020</a></li>
+            <li><a href="#">June 2020</a></li>
+            <li><a href="#">May 2020</a></li>
+            <li><a href="#">April 2020</a></li>
+          </ol>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <svg class="bd-placeholder-img" height="220" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <svg class="bd-placeholder-img" height="220" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <svg class="bd-placeholder-img" height="220" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-            <title>Placeholder</title>
-            <rect width="100%" height="100%" fill="#55595c"></rect>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-          </svg>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
-              content. This content is a little bit longer.</p>
-          </div>
+
+        <div class="p-4">
+          <h4 class="fst-italic">Elsewhere</h4>
+          <ol class="list-unstyled">
+            <li><a href="#">GitHub</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+          </ol>
         </div>
       </div>
     </div>
   </div>
+
 
 {% endblock %}
