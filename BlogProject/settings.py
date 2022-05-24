@@ -4,6 +4,7 @@ from pathlib import Path
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
@@ -24,11 +25,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.home.apps.HomeConfig',
-    'apps.blog.apps.BlogConfig',
-    'apps.users.apps.UsersConfig',
-    'apps.shop.apps.ShopConfig',
-    'apps.dashboard.apps.DashboardConfig',
+    'apps.home',
+    'apps.blog',
+    'apps.users',
+    'apps.shop',
+    'apps.search',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,9 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'ckeditor',
-    'ckeditor_uploader',
-    'crispy_forms',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail',
+
+    'modelcluster',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -50,14 +62,26 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+    INTERNAL_IPS = [
+        '127.0.0.1',
+        '127.17.0.1'
+    ]
 
 ROOT_URLCONF = 'BlogProject.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(PROJECT_DIR, 'BlogProject/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,7 +102,7 @@ WSGI_APPLICATION = 'BlogProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'blog_project.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'blog_project.sqlite3'),
     }
 }
 
@@ -118,13 +142,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'static/'),
-)
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
-# Media files
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_DIR, 'BlogProject/static'),
+]
+
+# ManifestStaticFilesStorage is recommended in production, to prevent outdated
+# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
+# See https://docs.djangoproject.com/en/4.0/ref/contrib/staticfiles/#manifeststaticfilesstorage
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -134,29 +167,9 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'dashboard:index'
+# Wagtail configuration
 
-# Ckeditor configuration
-
-CKEDITOR_UPLOAD_PATH = "uploads/"
-
-CKEDITOR_RESTRICT_BY_DATE = False
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Custom',
-        'height': 800,
-        'width': 'full',
-        'toolbar_Custom': [
-            ['RemoveFormat', 'Source'],
-            ['Format'],
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList'],
-            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
-            ['Link', 'Unlink'],
-            ['Image', 'Iframe', 'Table', 'SpecialChar']
-        ]
-    }
-}
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+WAGTAIL_SITE_NAME = 'BlogProject'
+WAGTAIL_USER_EDIT_FORM = 'apps.users.forms.CustomUserEditForm'
+WAGTAIL_USER_CREATION_FORM = 'apps.users.forms.CustomUserCreationForm'
+WAGTAIL_USER_CUSTOM_FIELDS = ['picture', 'summary', 'bio']

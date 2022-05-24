@@ -1,14 +1,12 @@
 from django.shortcuts import render
 
-from apps.blog.models import Post, Category
-from apps.blog.views import QUOTE_OF_THE_DAY
+from apps.blog.models import BlogPost, Category
 
 
 def index(request):
-    featured_post = Post.objects.filter(visible=True).order_by('-date_published').first()
+    featured_post = BlogPost.objects.first()
     context = {
         'featured': featured_post,
-        'qod': QUOTE_OF_THE_DAY,
         'categories': Category.objects.all(),
         'title': "Home"
     }

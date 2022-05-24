@@ -1,26 +1,12 @@
-import os
-from uuid import uuid4
-
-from PIL import ImageOps, Image
-from ckeditor_uploader.fields import RichTextUploadingField
-from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.utils.timezone import now
+from wagtail.admin.panels import FieldPanel
+from wagtail.fields import RichTextField
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.models import Page
 
 from . import utils
-
-
-def path_and_rename(instance, filename):
-    upload_to = 'blog/'
-    ext = filename.split('.')[-1]
-    if instance.pk:
-        filename = f"{instance.pk}-{instance.headline}.{ext}"
-    else:
-        filename = f"{uuid4().hex}.{ext}"
-
-    return os.path.join(upload_to, filename)
 
 
 class Category(models.Model):
@@ -52,52 +38,46 @@ class Tag(models.Model):
         return f"{self.name} ({self.category})"
 
 
-class Post(models.Model):
-    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    headline = models.CharField(max_length=255)
-    cover = models.ImageField(upload_to=path_and_rename, null=True, blank=True)
+class BlogPost(Page):
+    template = 'blog/post_detail.html'
+
+    cover_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     tags = models.ManyToManyField(Tag)
     summary = models.CharField(max_length=200, null=True, blank=True)
-    body = RichTextUploadingField(null=True, blank=True)
+    body = RichTextField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(default=1)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
-    date_published = models.DateTimeField(default=None, null=True)
-    visible = models.BooleanField(default=False)
-    slug = models.SlugField(max_length=255, unique=True, default='')
+
+    content_panels = Page.content_panels + [
+        FieldPanel('owner'),
+        FieldPanel('summary'),
+        ImageChooserPanel('cover_image'),
+        FieldPanel('body'),
+    ]
+
+    class Meta:
+        verbose_name = 'Blog Post'
+        verbose_name_plural = 'Blog Posts'
 
     def __str__(self):
-        return f"Post #{self.id}: {self.headline}"
-
-    def __unicode__(self):
-        return self.headline
+        return f"Post #{self.id}: {self.title}"
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={"pk": self.id, "slug": self.slug})
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.headline)
-        self.reading_time = utils.get_reading_time(self.body)
-        self.body = utils.cleanup_body_html(self.body)
+        self.reading_time = utils.get_reading_time(str(self.body))
+        self.body = utils.cleanup_body_html(str(self.body))
 
         if not self.summary:
             self.summary = self.body[:200]
 
-        if self.visible is True:
-            self.date_published = now()
-        else:
-            self.date_published = None
-
-        if self.cover:
-            img = ImageOps.contain(
-                Image.open(self.cover.path),
-                (1200, 1200),
-                method=3
-            )
-
-            img.save(self.cover.path)
-
-        super(Post, self).save(*args, **kwargs)
+        super(BlogPost, self).save(*args, **kwargs)
 
 
 class Comment(models.Model):
@@ -105,7 +85,7 @@ class Comment(models.Model):
     author_email = models.EmailField()
     content = models.CharField(max_length=1024)
     subscribe = models.BooleanField(default=False)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     moderated = models.BooleanField(default=False)
 
