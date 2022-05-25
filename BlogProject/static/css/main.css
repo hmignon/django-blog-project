@@ -1,6 +1,6 @@
 body {
     font-family: 'Quicksand', sans-serif;
-    padding: 2rem 0;
+    color: #6a6a6a;
 }
 
 a {
@@ -20,32 +20,31 @@ a:hover {
 
 .blog-header-logo {
     font-family: 'Prata', serif;
-    font-size: 3rem;
+    font-size: 4rem;
+    color: #6a6a6a;
 }
 
 .blog-header-logo:hover {
     text-decoration: none;
+    color: #6a6a6a;
 }
 
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Prata', serif;
+    font-family: 'Lora', serif;
 }
 
 .display-4 {
     font-size: 2.5rem;
-}
-
-@media (min-width: 768px) {
-    .display-4 {
-        font-size: 3rem;
-    }
+    text-decoration: none;
 }
 
 nav a.current {
     color: #2d9c9f;
     font-weight: bold;
 }
+
+/* Sidebar */
 
 .home-subtitle {
     display: grid;
@@ -62,8 +61,17 @@ nav a.current {
     display: block;
 }
 
-@media (min-width: 768px) {
+.latest-sidebar {
+    text-decoration: none;
+    color: #6a6a6a;
 }
+
+.latest-sidebar:hover {
+    text-decoration: none;
+    color: #2d9c9f;
+}
+
+/* Home latest posts */
 
 .card {
     border-radius: 0;
@@ -72,6 +80,7 @@ nav a.current {
 
 .card-title a {
     text-decoration: none;
+    color: #6a6a6a;
 }
 
 .card img {

@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import CheckboxInput
 from django.urls import reverse
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -9,6 +10,7 @@ from wagtail.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.models import Page
 
+from apps.users.models import User
 from . import utils
 
 
@@ -56,6 +58,7 @@ class BlogPost(Page):
     body = RichTextField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(default=1)
     tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
+    featured = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
         FieldPanel('owner'),
@@ -63,6 +66,7 @@ class BlogPost(Page):
         ImageChooserPanel('cover_image'),
         FieldPanel('body'),
         FieldPanel('tags'),
+        FieldPanel('featured', widget=CheckboxInput()),
     ]
 
     class Meta:
@@ -72,8 +76,13 @@ class BlogPost(Page):
     def __str__(self):
         return f"Post #{self.id}: {self.title}"
 
-    def get_absolute_url(self):
-        return reverse('blog:detail', kwargs={"pk": self.id, "slug": self.slug})
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        all_posts = BlogPost.objects.all().order_by('-first_published_at')
+        context['latest_posts'] = all_posts
+        context['owner'] = User.objects.first()
+        return context
 
     def save(self, *args, **kwargs):
         self.reading_time = utils.get_reading_time(str(self.body))

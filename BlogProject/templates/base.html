@@ -20,7 +20,7 @@
   <!-- Custom styles -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Quicksand:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Quicksand:wght@300&display=swap" rel="stylesheet">
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
 </head>
 
@@ -30,8 +30,9 @@
 <header>
   <div class="px-3 py-2">
     <div class="container text-center mt-3 mb-3">
-      <a class="blog-header-logo text-black text-decoration-none" style="font-weight: normal;"
-         href="{% url 'home:index' %}">Blog Project</a>
+      <a class="blog-header-logo text-decoration-none" href="{% url 'home:index' %}">
+        <img src="{% static 'img/site_logo.png' %}" width="100%" alt="site logo">
+      </a>
     </div>
   </div>
 </header>
@@ -89,17 +90,9 @@
   </div>
 </div>
 
-<!-- Messages -->
 <main role="main" class="container">
   <div class="row">
     <div class="col-md-12">
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      {% endif %}
 
       <!-- Block Content -->
       {% block content %}{% endblock %}

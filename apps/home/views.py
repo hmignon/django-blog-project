@@ -6,24 +6,24 @@ from apps.users.models import User
 
 def index(request):
     all_posts = BlogPost.objects.all().order_by('-first_published_at')
-    featured_post = all_posts.first()
-    posts = all_posts.exclude(id=featured_post.id)
+    featured_post = all_posts.filter(featured=True).first()
 
     context = {
         'featured': featured_post,
-        'posts': all_posts,
+        'latest_posts': all_posts,
         'categories': '',
         'owner': User.objects.first(),
-        'title': "Home"
+        'title': 'Home'
     }
 
     return render(request, 'home/index.html', context)
 
 
 def contact(request):
-    return render(request, 'home/contact.html')
+    context = {'owner': User.objects.first()}
+    return render(request, 'home/contact.html', context)
 
 
 def about(request):
-    context = {'user': User.objects.first()}
+    context = {'owner': User.objects.first()}
     return render(request, 'home/about.html', context)
