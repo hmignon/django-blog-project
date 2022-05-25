@@ -79,9 +79,9 @@ class BlogPost(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        all_posts = BlogPost.objects.all().order_by('-first_published_at')
-        context['latest_posts'] = all_posts
+        context['latest_posts'] = BlogPost.objects.all().order_by('-first_published_at')
         context['owner'] = User.objects.first()
+
         return context
 
     def save(self, *args, **kwargs):

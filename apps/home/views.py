@@ -20,10 +20,18 @@ def index(request):
 
 
 def contact(request):
-    context = {'owner': User.objects.first()}
+    context = {
+        'owner': User.objects.first(),
+        'latest_posts': BlogPost.objects.all().order_by('-first_published_at'),
+
+    }
     return render(request, 'home/contact.html', context)
 
 
 def about(request):
-    context = {'owner': User.objects.first()}
+    context = {
+        'owner': User.objects.first(),
+        'latest_posts': BlogPost.objects.all().order_by('-first_published_at'),
+
+    }
     return render(request, 'home/about.html', context)

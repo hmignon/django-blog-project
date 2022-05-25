@@ -46,7 +46,7 @@ nav a.current {
 
 /* Sidebar */
 
-.home-subtitle {
+.sidebar-subtitle {
     display: grid;
     font-family: 'Quicksand', sans-serif;
     grid-gap: 20px;
@@ -55,7 +55,7 @@ nav a.current {
     text-transform: uppercase;
 }
 
-.home-subtitle:after, .home-subtitle:before {
+.sidebar-subtitle:after, .sidebar-subtitle:before {
     border-bottom: 1px solid #dee2e6;
     content: " ";
     display: block;
@@ -69,6 +69,11 @@ nav a.current {
 .latest-sidebar:hover {
     text-decoration: none;
     color: #2d9c9f;
+}
+
+.dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
 }
 
 /* Home latest posts */
@@ -98,6 +103,11 @@ nav a.current {
 }
 
 /* Blog posts */
+
+.richtext-image {
+    width: 100%;
+    height: auto;
+}
 
 .blog-post {
     margin-bottom: 2.5rem;

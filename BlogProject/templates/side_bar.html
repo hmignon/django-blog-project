@@ -2,7 +2,7 @@
 
 <div class="col-md-3 mb-5">
   <div class="mb-3">
-    <p class="home-subtitle text-center text-secondary"><span>About me</span></p>
+    <p class="sidebar-subtitle text-center text-secondary"><span>About me</span></p>
     <div style="top: 3rem;">
       <div class="mx-auto text-center mb-3">
         <a href="{% url 'home:about' %}">
@@ -13,7 +13,7 @@
     </div>
 
     <div>
-      <p class="home-subtitle text-center text-secondary mt-4"><span>Latest Blog Posts</span></p>
+      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>Latest Blog Posts</span></p>
       {% for post in latest_posts %}
         <div style="top: 3rem;">
           <div class="mx-auto text-center mb-1">
@@ -28,29 +28,43 @@
     </div>
 
     <div>
-      <p class="home-subtitle text-center text-secondary mt-4"><span>Archive</span></p>
-      <ol class="list-unstyled mb-0">
-        <li><a href="#">March 2021</a></li>
-        <li><a href="#">February 2021</a></li>
-        <li><a href="#">January 2021</a></li>
-        <li><a href="#">December 2020</a></li>
-        <li><a href="#">November 2020</a></li>
-        <li><a href="#">October 2020</a></li>
-        <li><a href="#">September 2020</a></li>
-        <li><a href="#">August 2020</a></li>
-        <li><a href="#">July 2020</a></li>
-        <li><a href="#">June 2020</a></li>
-        <li><a href="#">May 2020</a></li>
-        <li><a href="#">April 2020</a></li>
-      </ol>
+      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>Follow Me</span></p>
+      <div class="text-center">
+        <a class="p-2 link-secondary" href="#"><i class="bi bi-twitter"></i></a>
+        <a class="p-2 link-secondary" href="#"><i class="bi bi-instagram"></i></a>
+        <a class="p-2 link-secondary" href="#"><i class="bi bi-pinterest"></i></a>
+        <a class="p-2 link-secondary" href="#"><i class="bi bi-facebook"></i></a>
+      </div>
+    </div>
+
+    <div>
+      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>Archive</span></p>
+      <div class="dropdown text-center">
+        <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="archiveDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+          Select a month
+        </button>
+        <ul class="dropdown-menu p-2" aria-labelledby="archiveDropdown">
+          <li><a href="#" style="font-size: .875rem;">March 2021</a></li>
+          <li><a href="#" style="font-size: .875rem;">February 2021</a></li>
+          <li><a href="#" style="font-size: .875rem;">January 2021</a></li>
+          <li><a href="#" style="font-size: .875rem;">December 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">November 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">October 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">September 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">August 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">July 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">June 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">May 2020</a></li>
+          <li><a href="#" style="font-size: .875rem;">April 2020</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="mb-3">
-      <p class="home-subtitle text-center text-secondary mt-4"><span>Elsewhere</span></p>
-      <ol class="list-unstyled">
-        <li><a href="#">GitHub</a></li>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">Facebook</a></li>
+      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>About the project</span></p>
+      <ol class="list-unstyled text-center">
+        <li><a href="https://github.com/hmignon/django-blog-project">GitHub</a></li>
       </ol>
     </div>
   </div>
