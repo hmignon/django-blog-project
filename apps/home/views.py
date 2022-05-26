@@ -6,10 +6,10 @@ from apps.users.models import User
 
 def index(request):
     all_posts = BlogPost.objects.all().order_by('-first_published_at')
-    featured_post = all_posts.filter(featured=True).first()
+    featured_posts = all_posts.filter(featured=True)[:3]
 
     context = {
-        'featured': featured_post,
+        'featured': featured_posts,
         'latest_posts': all_posts,
         'categories': '',
         'owner': User.objects.first(),

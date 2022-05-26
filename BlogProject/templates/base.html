@@ -18,7 +18,7 @@
 
 
   <!-- Custom styles -->
-  <link rel="icon" href="{% static 'img/favicon.ico' %}" />
+  <link rel="icon" href="{% static 'img/favicon.ico' %}"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora&family=Quicksand:wght@300&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@
 
 <div class="container">
 
-  <!-- Categories -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -54,19 +54,27 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
+            <li class="nav-item nav-main">
               <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'home:index' %}">HOME</a>
             </li>
-            <li class="nav-item">
-              <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'home:about' %}">ABOUT</a>
+            <li class="nav-item dropdown">
+              <a class="p-1 link-secondary text-decoration-none px-3 dropdown-toggle" id="navbarDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">ABOUT</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'home:about' %}">About me</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="https://github.com/hmignon/django-blog-project">Github</a></li>
+              </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item nav-main">
               <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'home:contact' %}">CONTACT</a>
             </li>
-            <li class="nav-item">
-              <a class="p-1 link-secondary text-decoration-none px-3" href="#">BLOG</a>
+            <li class="nav-item nav-main">
+              <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'blog:list' %}">BLOG</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item nav-main">
               <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'shop:list' %}">SHOP</a>
             </li>
           </ul>

@@ -1,47 +1,11 @@
 from django.db import models
 from django.forms import CheckboxInput
-from django.urls import reverse
-from modelcluster.contrib.taggit import ClusterTaggableManager
-from modelcluster.fields import ParentalKey
-from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel
-from wagtail.contrib.routable_page.models import RoutablePageMixin
 from wagtail.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.models import Page
 
-from apps.users.models import User
 from . import utils
-
-
-class BlogListingPage(RoutablePageMixin, Page):
-    """Listing page lists all the Blog Detail Pages."""
-
-    template = "blog/blog_list.html"
-    max_count = 1
-
-    content_panels = Page.content_panels
-
-    def get_context(self, request, *args, **kwargs):
-        """Adding custom stuff to our context."""
-        context = super().get_context(request, *args, **kwargs)
-        # Get all posts
-        all_posts = BlogPost.objects.live().public().order_by('-first_published_at')
-
-        if request.GET.get('tag', None):
-            tags = request.GET.get('tag')
-            all_posts = all_posts.filter(tags__slug__in=[tags])
-
-        context["posts"] = all_posts
-        return context
-
-
-class BlogPostTag(TaggedItemBase):
-    content_object = ParentalKey(
-        'BlogPost',
-        related_name='tagged_items',
-        on_delete=models.CASCADE,
-    )
 
 
 class BlogPost(Page):
@@ -57,7 +21,6 @@ class BlogPost(Page):
     summary = models.CharField(max_length=255, null=True, blank=True)
     body = RichTextField(null=True, blank=True)
     reading_time = models.PositiveIntegerField(default=1)
-    tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
     featured = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
@@ -65,7 +28,6 @@ class BlogPost(Page):
         FieldPanel('summary'),
         ImageChooserPanel('cover_image'),
         FieldPanel('body'),
-        FieldPanel('tags'),
         FieldPanel('featured', widget=CheckboxInput()),
     ]
 
@@ -80,7 +42,7 @@ class BlogPost(Page):
         context = super().get_context(request, *args, **kwargs)
 
         context['latest_posts'] = BlogPost.objects.all().order_by('-first_published_at')
-        context['owner'] = User.objects.first()
+        context['owner'] = self.owner
 
         return context
 

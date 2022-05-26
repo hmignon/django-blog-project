@@ -1,50 +1,19 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags %}
+{% load static %}
 {% block content %}
 
-  {% include "blog/blog_nav.html" %}
+  <div class="row g-5 mt-1">
+    <div class="col-md-9 mb-5">
+      <h2 class="text-center">Blog</h2>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
 
-  <h2 class="text-center mt-3 mb-4">Blog</h2>
+        <p>Section under development</p>
 
-  <div class="row g-5">
-    <div class="col-md-8">
-
-      <nav class="blog-pagination" aria-label="Pagination">
-        <a class="btn btn-outline-primary" href="#">Older</a>
-        <a class="btn btn-outline-secondary disabled">Newer</a>
-      </nav>
-
+      </div>
     </div>
 
-    {% for post in posts %}
-      <article class="media content-section">
-
-        <img class="rounded-circle article-img" src="{{ post.owner.picture.url }}"
-             alt="{{ post.user.username }} profile picture">
-
-        <div class="media-body">
-
-          <div class="article-metadata">
-            <a class="mr-2 mb-0" href="#">{{ post.owner.username }}</a>
-            <small class="text-muted">{{ post.last_published_at | date:"F d, Y" }}</small>
-          </div>
-
-          <h2 class="mt-0"><a class="text-dark" href="{{ post.url }}">{{ post.title }}</a></h2>
-          <div class="ticket-description">
-
-            {% if post.cover_image %}
-              {% image post.cover_image width-1500 as img %}
-              <img class="img-thumbnail float-left mb-1 mr-3" src="{{ img.url }}"
-                   alt="{{ post.title }}">
-            {% endif %}
-
-            <p class="article-content text-justify mt-3 mr-3">{{ post.summary }}</p>
-          </div>
-
-        </div>
-      </article>
-    {% endfor %}
-
+    {% include "side_bar.html" %}
   </div>
+
 
 {% endblock %}

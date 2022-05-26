@@ -1,8 +1,9 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
+<!-- Sidebar -->
 <div class="col-md-3 mb-5">
   <div class="mb-3">
-    <p class="sidebar-subtitle text-center text-secondary"><span>About me</span></p>
+    <p class="sidebar-subtitle text-center text-secondary"><span>About {{ owner.first_name }}</span></p>
     <div style="top: 3rem;">
       <div class="mx-auto text-center mb-3">
         <a href="{% url 'home:about' %}">
