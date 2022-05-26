@@ -9,7 +9,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-blog_project.sqlite3
 
 # Environments
 .env
