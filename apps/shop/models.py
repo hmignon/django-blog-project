@@ -1,78 +1,133 @@
-import os
-from uuid import uuid4
+import re
 
+from django.core.exceptions import ValidationError
 from django.db import models
-from django.urls import reverse
-from django.utils.text import slugify
+from django.forms.widgets import RadioSelect
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.models import Orderable, Page
+from wagtail.search import index
+from wagtail.snippets.models import register_snippet
+
+from apps.blog.models import BlogPost
 
 
-def path_and_rename(instance, filename):
-    upload_to = 'shop/'
-    ext = filename.split('.')[-1]
-    if instance.pk:
-        filename = f"{instance.pk}-{instance.name}.{ext}"
-    else:
-        filename = f"{uuid4().hex}.{ext}"
+class ProductPage(Page):
+    template = 'shop/product_detail.html'
 
-    return os.path.join(upload_to, filename)
+    # noinspection PyUnresolvedReferences
+    cover_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    summary = models.CharField(max_length=255, null=True, blank=True)
+    description = RichTextField(null=True, blank=True)
+    in_stock = models.PositiveIntegerField(default=0)
+    price_incl_tax = models.FloatField(default=0)
+    price_excl_tax = models.FloatField(default=0)
+    featured = models.BooleanField(default=False)
 
-
-class Color(models.Model):
-    name = models.CharField(max_length=20)
-    hex_code = models.CharField(max_length=6)
-
-
-class ImageAlbum(models.Model):
-    name = models.CharField(max_length=20)
-
-    def default(self):
-        return self.images.filter(default=True).first()
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class Image(models.Model):
-    name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to=path_and_rename)
-    album = models.ForeignKey(ImageAlbum, on_delete=models.CASCADE, related_name='images')
-    default = models.BooleanField(default=False)
-    slug = models.SlugField(max_length=100, unique=True, default='')
-
-    def __str__(self):
-        return f"{self.name} ({self.album})"
+    class Meta:
+        verbose_name = 'Product Page'
+        verbose_name_plural = 'Product pages'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Image, self).save(*args, **kwargs)
+        self.price_incl_tax = round(self.price_incl_tax, 2)
+        self.price_excl_tax = round(self.price_excl_tax, 2)
+        super(ProductPage, self).save(*args, **kwargs)
 
-
-class Product(models.Model):
-    name = models.CharField(max_length=50)
-    price = models.FloatField()
-    colors = models.ManyToManyField(Color)
-    in_stock = models.PositiveIntegerField()
-    album = models.OneToOneField(ImageAlbum, related_name='album', on_delete=models.CASCADE)
-    visible = models.BooleanField(default=True)
-    slug = models.SlugField(max_length=255, unique=True, default='slug')
+    @property
+    def colors(self):
+        colors = [
+            n.color for n in self.product_color_relationship.all()
+        ]
+        return colors
 
     def __str__(self):
-        return f"Product #{self.id}: {self.name}"
+        return f"Post #{self.id}: {self.title}"
 
-    def __unicode__(self):
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context['latest_posts'] = BlogPost.objects.all().order_by('-first_published_at')[:8]
+        context['owner'] = self.owner
+
+        return context
+
+    def main_image(self):
+        gallery_item = self.gallery_images.first()
+        if gallery_item:
+            return gallery_item.image
+        else:
+            return None
+
+    search_fields = Page.search_fields + [
+        index.SearchField('description'),
+        index.SearchField('title'),
+        index.SearchField('summary')
+    ]
+
+    content_panels = Page.content_panels + [
+        FieldPanel('summary'),
+        ImageChooserPanel('cover_image'),
+        FieldPanel('description'),
+        InlinePanel('product_color_relationship', heading="Available colors"),
+        FieldPanel('featured', widget=RadioSelect(choices=[(True, "Yes"), (False, "No")]),
+                   heading="Feature this product on the home page?"),
+        InlinePanel('gallery_images', label="Gallery images")
+    ]
+
+
+@register_snippet
+class ProductColor(models.Model):
+    name = models.CharField(max_length=20)
+    hex_code = models.CharField(max_length=7, default="#000000")
+
+    class Meta:
+        verbose_name = "Product color"
+        verbose_name_plural = "Product colors"
+
+    def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('shop:detail', kwargs={"pk": self.id, "slug": self.slug})
+    def clean(self):
+        if "#" not in self.hex_code:
+            self.hex_code = f"#{self.hex_code}"
+
+        if not re.search(r"^#(?:[\da-fA-F]{3}){1,2}$", self.hex_code):
+            raise ValidationError({'hex_code': 'Hex code is invalid.'})
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
-        is_new = True if not self.id else False
-        super(Product, self).save(*args, **kwargs)
-        if is_new:
-            album = ImageAlbum(name=self.name)
-            album.save()
-            self.album = album
-            self.save()
+
+class ProductColorRelationship(models.Model):
+    product = ParentalKey(
+        'ProductPage',
+        related_name='product_color_relationship'
+    )
+    color = models.ForeignKey('ProductColor', related_name="+", on_delete=models.CASCADE)
+
+    panels = [
+        FieldPanel('color')
+    ]
+
+
+class ProductGalleryImage(Orderable):
+    page = ParentalKey('ProductPage', on_delete=models.CASCADE, related_name='gallery_images')
+    # noinspection PyUnresolvedReferences
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+    )
+    caption = models.CharField(blank=True, max_length=250)
+
+    panels = [
+        ImageChooserPanel('image'),
+        FieldPanel('caption'),
+    ]

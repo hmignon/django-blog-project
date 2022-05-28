@@ -3,20 +3,15 @@
 <!-- Sidebar -->
 <div class="col-md-3 mb-5">
   <div class="mb-3">
-    <p class="sidebar-subtitle text-center text-secondary"><span>About {{ owner.first_name }}</span></p>
-    <div style="top: 3rem;">
-      <div class="mx-auto text-center mb-3">
-        <a href="{% url 'home:about' %}">
-          <img src="{{ owner.picture.url }}" width="100%" alt="{{ owner.username }} profile picture">
-        </a>
-      </div>
-      <p class="mb-0">{{ owner.summary | richtext }}</p>
-    </div>
 
-    <div>
-      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>Latest Blog Posts</span></p>
+    {% if 'pages/' in request.get_full_path %}
+      {% include 'blog/side_bar_author.html' %}
+    {% endif %}
+
+    <div class="mb-3">
+      <p class="sidebar-subtitle text-center text-secondary"><span>Latest Blog Posts</span></p>
       {% for post in latest_posts %}
-        <div style="top: 3rem;">
+        <div class="sidebar-section">
           <div class="mx-auto text-center mb-1">
             <a href="{{ post.url }}">
               {% image post.cover_image fill-500x350 as img %}
@@ -46,18 +41,18 @@
           Select a month
         </button>
         <ul class="dropdown-menu p-2" aria-labelledby="archiveDropdown">
-          <li><a href="#" style="font-size: .875rem;">March 2021</a></li>
-          <li><a href="#" style="font-size: .875rem;">February 2021</a></li>
-          <li><a href="#" style="font-size: .875rem;">January 2021</a></li>
-          <li><a href="#" style="font-size: .875rem;">December 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">November 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">October 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">September 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">August 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">July 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">June 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">May 2020</a></li>
-          <li><a href="#" style="font-size: .875rem;">April 2020</a></li>
+          <li><a href="#" class="archive-link">March 2021</a></li>
+          <li><a href="#" class="archive-link">February 2021</a></li>
+          <li><a href="#" class="archive-link">January 2021</a></li>
+          <li><a href="#" class="archive-link">December 2020</a></li>
+          <li><a href="#" class="archive-link">November 2020</a></li>
+          <li><a href="#" class="archive-link">October 2020</a></li>
+          <li><a href="#" class="archive-link">September 2020</a></li>
+          <li><a href="#" class="archive-link">August 2020</a></li>
+          <li><a href="#" class="archive-link">July 2020</a></li>
+          <li><a href="#" class="archive-link">June 2020</a></li>
+          <li><a href="#" class="archive-link">May 2020</a></li>
+          <li><a href="#" class="archive-link">April 2020</a></li>
         </ul>
       </div>
     </div>

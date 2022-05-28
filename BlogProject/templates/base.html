@@ -55,11 +55,12 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item nav-main">
-              <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'home:index' %}">HOME</a>
+              <a class="p-1 link-secondary text-decoration-none" href="{% url 'home:index' %}">HOME</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="p-1 link-secondary text-decoration-none px-3 dropdown-toggle" id="navbarDropdown" role="button"
-                 data-bs-toggle="dropdown" aria-expanded="false">ABOUT</a>
+              <a class="p-1 link-secondary text-decoration-none dropdown-toggle" id="navbarDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">ABOUT<i
+                  class="bi bi-chevron-down dropdown-icon"></i></a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'home:about' %}">About me</a></li>
                 <li>
@@ -69,13 +70,13 @@
               </ul>
             </li>
             <li class="nav-item nav-main">
-              <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'home:contact' %}">CONTACT</a>
+              <a class="p-1 link-secondary text-decoration-none" href="{% url 'home:contact' %}">CONTACT</a>
             </li>
             <li class="nav-item nav-main">
-              <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'blog:list' %}">BLOG</a>
+              <a class="p-1 link-secondary text-decoration-none" href="{% url 'blog:list' %}">BLOG</a>
             </li>
             <li class="nav-item nav-main">
-              <a class="p-1 link-secondary text-decoration-none px-3" href="{% url 'shop:list' %}">SHOP</a>
+              <a class="p-1 link-secondary text-decoration-none" href="{% url 'shop:list' %}">SHOP</a>
             </li>
           </ul>
           <div class="p-1">

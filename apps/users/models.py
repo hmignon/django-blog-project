@@ -5,7 +5,7 @@ from wagtail.fields import RichTextField
 
 
 class User(AbstractUser):
-    summary = models.CharField(max_length=255, null=True, blank=True)
+    summary = RichTextField(null=True, blank=True, features=['bold', 'italic', 'link'])
     bio = RichTextField(null=True, blank=True)
     picture = models.ImageField(upload_to='users/', default='img/default.jpg')
 

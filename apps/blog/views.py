@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from apps.users.models import User
-from .models import BlogPost
+from .models import BlogCategory, BlogPost
 
 
 def blog_list(request):
@@ -9,7 +9,7 @@ def blog_list(request):
 
     context = {
         'latest_posts': all_posts,
-        'categories': '',
+        'categories': BlogCategory.objects.all(),
         'owner': User.objects.first(),
         'title': 'Blog'
     }

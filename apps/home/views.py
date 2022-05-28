@@ -1,17 +1,17 @@
 from django.shortcuts import render
 
-from apps.blog.models import BlogPost
+from apps.blog.models import BlogCategory, BlogPost
 from apps.users.models import User
 
 
 def index(request):
     all_posts = BlogPost.objects.all().order_by('-first_published_at')
-    featured_posts = all_posts.filter(featured=True)[:3]
+    featured_posts = all_posts.filter(featured=True)[:4]
 
     context = {
         'featured': featured_posts,
-        'latest_posts': all_posts,
-        'categories': '',
+        'latest_posts': all_posts[:8],
+        'categories': BlogCategory.objects.all(),
         'owner': User.objects.first(),
         'title': 'Home'
     }
