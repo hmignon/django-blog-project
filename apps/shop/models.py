@@ -11,8 +11,6 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from apps.blog.models import BlogPost
-
 
 class ProductPage(Page):
     template = 'shop/product_detail.html'
@@ -53,8 +51,6 @@ class ProductPage(Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-
-        context['latest_posts'] = BlogPost.objects.all().order_by('-first_published_at')[:8]
         context['owner'] = self.owner
 
         return context

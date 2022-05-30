@@ -1,0 +1,6 @@
+{% for page in about_pages %}
+  <li><a class="dropdown-item" href="{{ page.url }}">{{ page.title }}</a></li>
+  <li>
+    <hr class="dropdown-divider">
+  </li>
+{% endfor %}

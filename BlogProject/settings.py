@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -173,3 +174,5 @@ WAGTAIL_SITE_NAME = 'BlogProject'
 WAGTAIL_USER_EDIT_FORM = 'apps.users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'apps.users.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = ['picture', 'summary', 'bio']
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

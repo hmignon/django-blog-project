@@ -1,13 +1,23 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailcore_tags %}
 {% block content %}
 
   <div class="row g-5 mt-1">
     <div class="col-md-9 mb-5">
-      <h2 class="text-center">About</h2>
+      <h2 class="text-center">{{ self.title }}</h2>
       <div class="row row-cols-1 row-cols-md-2 g-4">
 
-        <p>Section under development</p>
+        <article>
+          {% for block in page.body %}
+            {% if block.block_type == 'heading' %}
+              <h3>{{ block.value }}</h3>
+            {% else %}
+              <section class="block-{{ block.block_type }}">
+                {% include_block block %}
+              </section>
+            {% endif %}
+          {% endfor %}
+        </article>
 
       </div>
     </div>

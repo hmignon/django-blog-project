@@ -2,6 +2,7 @@ import re
 
 from django.db import models
 from django.forms import RadioSelect
+from django.utils.text import slugify
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
@@ -55,9 +56,6 @@ class BlogPost(Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-
-        context['latest_posts'] = BlogPost.objects.all().order_by('-first_published_at')[:8]
-        context['categories'] = BlogCategory.objects.all()
         context['owner'] = self.owner
 
         return context
@@ -81,9 +79,14 @@ class BlogPost(Page):
 @register_snippet
 class BlogCategory(models.Model):
     name = models.CharField(max_length=50)
+    slug = models.SlugField(default=' ')
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(BlogCategory, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Blog category"

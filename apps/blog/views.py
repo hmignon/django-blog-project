@@ -1,17 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
-from apps.users.models import User
-from .models import BlogCategory, BlogPost
+from .models import BlogCategory, BlogPost, PostCategoryRelationship
 
 
 def blog_list(request):
-    all_posts = BlogPost.objects.all().order_by('-first_published_at')
+    posts = BlogPost.objects.live().order_by('-first_published_at')
 
     context = {
-        'latest_posts': all_posts,
-        'categories': BlogCategory.objects.all(),
-        'owner': User.objects.first(),
-        'title': 'Blog'
+        'posts': posts,
+        'title': 'All posts'
+    }
+
+    return render(request, 'blog/blog_list.html', context)
+
+
+def blog_by_category(request, slug):
+    category = get_object_or_404(BlogCategory, slug=slug)
+
+    filtered_relationship = PostCategoryRelationship.objects.filter(category=category)
+    posts = []
+    for relation in filtered_relationship:
+        posts.append(BlogPost.objects.get(id=relation.post.id))
+
+    context = {
+        'posts': posts,
+        'title': f"{category.name}"
     }
 
     return render(request, 'blog/blog_list.html', context)

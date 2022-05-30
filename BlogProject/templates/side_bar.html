@@ -1,3 +1,4 @@
+{% load global_context %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
 <!-- Sidebar -->
@@ -10,17 +11,7 @@
 
     <div class="mb-3">
       <p class="sidebar-subtitle text-center text-secondary"><span>Latest Blog Posts</span></p>
-      {% for post in latest_posts %}
-        <div class="sidebar-section">
-          <div class="mx-auto text-center mb-1">
-            <a href="{{ post.url }}">
-              {% image post.cover_image fill-500x350 as img %}
-              <img src="{{ img.url }}" width="100%" alt="{{ post.title }} profile picture">
-            </a>
-          </div>
-          <a href="{{ post.url }}" class="latest-sidebar"><p class="mb-4 text-center p-1">{{ post.title }}</p></a>
-        </div>
-      {% endfor %}
+      {% latest_posts %}
     </div>
 
     <div>

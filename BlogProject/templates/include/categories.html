@@ -1,0 +1,6 @@
+{% for category in blog_categories %}
+  <li><a class="dropdown-item" href="{% url 'blog:category' category.slug %}">{{ category.name }}</a></li>
+  <li>
+    <hr class="dropdown-divider">
+  </li>
+{% endfor %}

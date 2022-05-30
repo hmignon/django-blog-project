@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load static %}
+{% load static global_context %}
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -58,22 +58,27 @@
               <a class="p-1 link-secondary text-decoration-none" href="{% url 'home:index' %}">HOME</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="p-1 link-secondary text-decoration-none dropdown-toggle" id="navbarDropdown" role="button"
+              <a class="p-1 link-secondary text-decoration-none dropdown-toggle" id="aboutDropdown" role="button"
                  data-bs-toggle="dropdown" aria-expanded="false">ABOUT<i
                   class="bi bi-chevron-down dropdown-icon"></i></a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'home:about' %}">About me</a></li>
+              <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                {% about_pages %}
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="p-1 link-secondary text-decoration-none dropdown-toggle" id="blogDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">BLOG<i
+                  class="bi bi-chevron-down dropdown-icon"></i></a>
+              <ul class="dropdown-menu" aria-labelledby="blogDropdown">
+                {% blog_categories %}
+                <li><a class="dropdown-item" href="{% url 'blog:list' %}">All posts</a></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="https://github.com/hmignon/django-blog-project">Github</a></li>
               </ul>
             </li>
             <li class="nav-item nav-main">
               <a class="p-1 link-secondary text-decoration-none" href="{% url 'home:contact' %}">CONTACT</a>
-            </li>
-            <li class="nav-item nav-main">
-              <a class="p-1 link-secondary text-decoration-none" href="{% url 'blog:list' %}">BLOG</a>
             </li>
             <li class="nav-item nav-main">
               <a class="p-1 link-secondary text-decoration-none" href="{% url 'shop:list' %}">SHOP</a>
@@ -95,7 +100,7 @@
     </div>
   </nav>
 
-  <div class="border-bottom mb-3">
+  <div class="border-bottom mb-0">
     <div class="container d-flex flex-wrap justify-content-center"></div>
   </div>
 </div>
