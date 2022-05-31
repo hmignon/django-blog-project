@@ -1,30 +1,39 @@
 from django.shortcuts import get_object_or_404, render
 
-from .models import BlogCategory, BlogPost, PostCategoryRelationship
+from .models import BlogCategory, BlogPost, PostCategoryRelationship, SubCategory
 
 
 def blog_list(request):
-    posts = BlogPost.objects.live().order_by('-first_published_at')
+    posts = BlogPost.objects.live().order_by("-first_published_at")
 
     context = {
-        'posts': posts,
-        'title': 'All posts'
+        "posts": posts,
+        "title": "All posts"
     }
 
-    return render(request, 'blog/blog_list.html', context)
+    return render(request, "blog/blog_list.html", context)
 
 
-def blog_by_category(request, slug):
-    category = get_object_or_404(BlogCategory, slug=slug)
+def blog_by_category(request, category_slug, sub_slug):
+    category = get_object_or_404(BlogCategory, slug=category_slug)
 
-    filtered_relationship = PostCategoryRelationship.objects.filter(category=category)
-    posts = []
-    for relation in filtered_relationship:
-        posts.append(BlogPost.objects.get(id=relation.post.id))
+    if sub_slug == 'all':
+        filtered_relationship = PostCategoryRelationship.objects.filter(category=category)
+        title = f"{category.name} - All posts"
+        posts = []
+        for relation in filtered_relationship:
+            posts.append(BlogPost.objects.get(id=relation.post.id))
+    else:
+        sub = get_object_or_404(SubCategory, slug=sub_slug)
+        filtered_relationship = PostCategoryRelationship.objects.filter(sub_category=sub)
+        title = f"{category.name} - {sub.name}"
+        posts = []
+        for relation in filtered_relationship:
+            posts.append(BlogPost.objects.get(id=relation.post.id))
 
     context = {
-        'posts': posts,
-        'title': f"{category.name}"
+        "posts": posts,
+        "title": title
     }
 
-    return render(request, 'blog/blog_list.html', context)
+    return render(request, "blog/blog_list.html", context)

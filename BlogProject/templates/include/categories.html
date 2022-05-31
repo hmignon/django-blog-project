@@ -1,6 +1,20 @@
+{% load global_context %}
+
 {% for category in blog_categories %}
-  <li><a class="dropdown-item" href="{% url 'blog:category' category.slug %}">{{ category.name }}</a></li>
-  <li>
-    <hr class="dropdown-divider">
+  <li class="nav-item dropdown">
+    <a class="p-1 link-secondary text-decoration-none dropdown-toggle" id="blogDropdown" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">{{ category.name | upper }}<i
+        class="bi bi-chevron-down dropdown-icon"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="blogDropdown">
+      <li><a class="dropdown-item" href="{% url 'blog:category' category.slug 'all' %}">All {{ category.name }}
+        posts</a></li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      {% if category.sub_categories %}
+        {% sub_categories category %}
+      {% endif %}
+    </ul>
   </li>
+
 {% endfor %}

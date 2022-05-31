@@ -16,4 +16,4 @@ class ContactForm(forms.Form):
     )
 
     class Meta:
-        fields = ['name', 'email', 'message']
+        fields = ["name", "email", "message"]

@@ -1,5 +1,5 @@
 from django import template
-from apps.blog.models import BlogPost, BlogCategory
+from apps.blog.models import BlogPost, BlogCategory, SubCategory
 from apps.home.models import AboutPage
 
 register = template.Library()
@@ -25,3 +25,10 @@ def blog_categories():
     categories = BlogCategory.objects.all()
 
     return {'blog_categories': categories}
+
+
+@register.inclusion_tag('include/sub_categories.html')
+def sub_categories(category):
+    subs = SubCategory.objects.filter(category=category)
+
+    return {'subs': subs}

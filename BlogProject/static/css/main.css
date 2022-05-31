@@ -4,7 +4,7 @@ body {
 }
 
 a, a:hover {
-    color: #2d9c9f;
+    color: #00916e;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -13,19 +13,32 @@ h1, h2, h3, h4, h5, h6 {
 
 /*noinspection ALL,CssUnusedSymbol*/
 .form-control:focus {
-    border-color: #2d9c9f;
+    border-color: #00916e;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 5px rgba(45, 156, 159, 0.2);
 }
 
 
 /* Navbar */
 
+.nav-container {
+    background-color: #fdf5ee;
+    width: 100%;
+}
+
+.navbar {
+    padding-top: .875rem;
+}
+
 .nav-item {
-    margin-right: 4rem;
+    margin-right: 1.5rem;
+}
+
+.link-secondary:hover {
+    color: #00916e;
 }
 
 nav .nav-main a.current {
-    color: #2d9c9f;
+    color: #00916e;
     font-weight: bold;
 }
 
@@ -49,7 +62,7 @@ nav .dropdown:hover .dropdown-menu, .dropdown-menu.show {
 
 .dropdown-menu {
     border-radius: 0;
-    border-top: solid #2d9c9f;
+    border-top: solid #00916e;
     font-size: 11px;
     max-width: 10rem;
     padding: 0;
@@ -84,18 +97,18 @@ nav .dropdown:hover .dropdown-menu, .dropdown-menu.show {
 }
 
 .sidebar-subtitle:after, .sidebar-subtitle:before {
-    border-bottom: 1px solid #2d9c9f;
+    border-bottom: 1px solid #00916e;
     content: " ";
     display: block;
 }
 
 .latest-sidebar {
-    color: #000000;
+    color: #111111;
     text-decoration: none;
 }
 
 .latest-sidebar:hover {
-    color: #2d9c9f;
+    color: #00916e;
     text-decoration: none;
 }
 
@@ -111,69 +124,10 @@ nav .dropdown:hover .dropdown-menu, .dropdown-menu.show {
 }
 
 
-/* Home page */
-
-.carousel-item img {
-    filter: brightness(85%);
-}
-
-.carousel-caption {
-    text-shadow: black 1px 0 10px;
-}
-
-.display-4 {
-    font-size: 2.5rem;
-    text-decoration: none;
-}
-
-.card {
-    border-radius: 0;
-    box-shadow: 3px 3px 5px #eeeeee;
-}
-
-.card-title a {
-    color: #6a6a6a;
-    text-decoration: none;
-}
-
-.card img {
-    border-radius: 0;
-}
-
-
-/* Blog posts */
-
-/*noinspection CssUnusedSymbol*/
-.richtext-image {
-    height: auto;
-    width: 100%;
-}
-
-.blog-post {
-    margin-bottom: 2.5rem;
-}
-
-.blog-post-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.blog-post-meta {
-    color: #727272;
-    margin-bottom: 1rem;
-}
-
-article img {
-    display: block;
-    margin: 1.5rem auto 2rem auto;
-    max-width: 100%;
-}
-
-
 /* Footer */
 
 .blog-footer {
-    background-color: #eeeeee;
+    background-color: #fdf5ee;
     border-top: .05rem solid #e5e5e5;
     padding: 0.1rem 0;
     text-align: center;

@@ -13,15 +13,15 @@ from wagtail.snippets.models import register_snippet
 
 
 class ProductPage(Page):
-    template = 'shop/product_detail.html'
+    template = "shop/product_detail.html"
 
     # noinspection PyUnresolvedReferences
     cover_image = models.ForeignKey(
-        'wagtailimages.Image',
+        "wagtailimages.Image",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
     summary = models.CharField(max_length=255, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
@@ -31,8 +31,8 @@ class ProductPage(Page):
     featured = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'Product Page'
-        verbose_name_plural = 'Product pages'
+        verbose_name = "Product Page"
+        verbose_name_plural = "Product pages"
 
     def save(self, *args, **kwargs):
         self.price_incl_tax = round(self.price_incl_tax, 2)
@@ -51,7 +51,7 @@ class ProductPage(Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context['owner'] = self.owner
+        context["owner"] = self.owner
 
         return context
 
@@ -63,19 +63,19 @@ class ProductPage(Page):
             return None
 
     search_fields = Page.search_fields + [
-        index.SearchField('description'),
-        index.SearchField('title'),
-        index.SearchField('summary')
+        index.SearchField("description"),
+        index.SearchField("title"),
+        index.SearchField("summary")
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel('summary'),
-        ImageChooserPanel('cover_image'),
-        FieldPanel('description'),
-        InlinePanel('product_color_relationship', heading="Available colors"),
-        FieldPanel('featured', widget=RadioSelect(choices=[(True, "Yes"), (False, "No")]),
+        FieldPanel("summary"),
+        ImageChooserPanel("cover_image"),
+        FieldPanel("description"),
+        InlinePanel("product_color_relationship", heading="Available colors"),
+        FieldPanel("featured", widget=RadioSelect(choices=[(True, "Yes"), (False, "No")]),
                    heading="Feature this product on the home page?"),
-        InlinePanel('gallery_images', label="Gallery images")
+        InlinePanel("gallery_images", label="Gallery images")
     ]
 
 
@@ -96,7 +96,7 @@ class ProductColor(models.Model):
             self.hex_code = f"#{self.hex_code}"
 
         if not re.search(r"^#(?:[\da-fA-F]{3}){1,2}$", self.hex_code):
-            raise ValidationError({'hex_code': 'Hex code is invalid.'})
+            raise ValidationError({"hex_code": "Hex code is invalid."})
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -105,25 +105,25 @@ class ProductColor(models.Model):
 
 class ProductColorRelationship(models.Model):
     product = ParentalKey(
-        'ProductPage',
-        related_name='product_color_relationship'
+        "ProductPage",
+        related_name="product_color_relationship"
     )
-    color = models.ForeignKey('ProductColor', related_name="+", on_delete=models.CASCADE)
+    color = models.ForeignKey("ProductColor", related_name="+", on_delete=models.CASCADE)
 
     panels = [
-        FieldPanel('color')
+        FieldPanel("color")
     ]
 
 
 class ProductGalleryImage(Orderable):
-    page = ParentalKey('ProductPage', on_delete=models.CASCADE, related_name='gallery_images')
+    page = ParentalKey("ProductPage", on_delete=models.CASCADE, related_name="gallery_images")
     # noinspection PyUnresolvedReferences
     image = models.ForeignKey(
-        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+        "wagtailimages.Image", on_delete=models.CASCADE, related_name="+"
     )
     caption = models.CharField(blank=True, max_length=250)
 
     panels = [
-        ImageChooserPanel('image'),
-        FieldPanel('caption'),
+        ImageChooserPanel("image"),
+        FieldPanel("caption"),
     ]

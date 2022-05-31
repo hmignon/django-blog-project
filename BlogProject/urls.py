@@ -9,9 +9,9 @@ from wagtail.documents import urls as wagtaildocs_urls
 urlpatterns = [
     path('django-admin/', admin.site.urls),
 
-    path('', include('apps.home.urls')),
-    path('blog/', include('apps.blog.urls')),
-    path('shop/', include('apps.shop.urls')),
+    path('', include("apps.home.urls")),
+    path('blog/', include("apps.blog.urls")),
+    path('shop/', include("apps.shop.urls")),
 
     path('admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
@@ -20,4 +20,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
+    urlpatterns += [path('__debug__/', include("debug_toolbar.urls"))]

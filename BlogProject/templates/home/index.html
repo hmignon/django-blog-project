@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block extracss %}
+  <link href="{% static 'css/home.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 
   <!-- Featured carousel -->

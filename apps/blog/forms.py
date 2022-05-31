@@ -28,7 +28,7 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['author_name', 'author_email', 'content', 'subscribe']
+        fields = ["author_name", "author_email", "content", "subscribe"]
 
 
 class ReplyForm(forms.Form):
@@ -50,4 +50,4 @@ class ReplyForm(forms.Form):
 
     class Meta:
         model = Reply
-        fields = ['author_name', 'author_email', 'content']
+        fields = ["author_name", "author_email", "content"]

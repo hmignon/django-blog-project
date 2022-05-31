@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags %}
+{% block extracss %}
+  <link href="{% static 'css/posts.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 
   <div class="row g-5 mt-0">
