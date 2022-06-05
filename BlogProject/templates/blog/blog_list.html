@@ -2,40 +2,48 @@
 {% load static wagtailimages_tags %}
 {% block content %}
 
-  <div class="row g-5 mt-1">
-    <div class="col-md-9 mb-5">
-      <h3 class="text-center mb-5">Browsing {{ title }}</h3>
-      <div class="row row-cols-1 row-cols-md-2 g-4">
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-12">
 
-        {% if posts %}
+        <div class="row g-5 mt-1">
+          <div class="col-md-9 mb-5">
+            <h3 class="text-center mb-5">Browsing {{ title }}</h3>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
 
-          {% for post in posts %}
-            <div class="col">
-            <div class="card">
-              {% if post.cover_image %}
-                {% image post.cover_image fill-500x350 as img %}
-                <a href="{{ post.url }}"><img src="{{ img.url }}" class="card-img-top" alt="{{ post.title }}"></a>
+              {% if posts %}
+
+                {% for post in posts %}
+                  <div class="col">
+                    <div class="card">
+                      {% if post.cover_image %}
+                        {% image post.cover_image fill-500x350 as img %}
+                        <a href="{{ post.url }}"><img src="{{ img.url }}" class="card-img-top"
+                                                      alt="{{ post.title }}"></a>
+                      {% endif %}
+                      <div class="card-body">
+                        <h4 class="card-title mt-3"><a href="{{ post.url }}">{{ post.title }}</a></h4>
+                        <p class="card-text">{{ post.summary }}...</p>
+                        <p class="card-text mb-3"><small
+                            class="text-muted">{{ post.first_published_at | date:"F d, Y" }}</small>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              {% else %}
+                <p>No posts to display for this category.</p>
               {% endif %}
-              <div class="card-body">
-                <h4 class="card-title mt-3"><a href="{{ post.url }}">{{ post.title }}</a></h4>
-                <p class="card-text">{{ post.summary }}...</p>
-                <p class="card-text mb-3"><small
-                    class="text-muted">{{ post.first_published_at | date:"F d, Y" }}</small>
-                </p>
-              </div>
-            </div>
-            </div>
-          {% endfor %}
 
-        {% else %}
-          <p>No posts to display for this category.</p>
-        {% endif %}
+            </div>
+          </div>
 
+          {% include "side_bar.html" %}
         </div>
+
       </div>
-
-      {% include "side_bar.html" %}
     </div>
-
+  </main>
 
 {% endblock %}

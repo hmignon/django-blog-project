@@ -13,7 +13,7 @@ class AboutPage(Page):
         ("heading", blocks.CharBlock(form_classname="full title")),
         ("paragraph", blocks.RichTextBlock()),
         ("image", ImageChooserBlock()),
-    ], use_json_field=True)
+    ], use_json_field=True, null=True, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
@@ -22,3 +22,9 @@ class AboutPage(Page):
     class Meta:
         verbose_name = "About page"
         verbose_name_plural = "About pages"
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["author"] = self.owner
+
+        return context

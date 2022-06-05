@@ -1,5 +1,9 @@
 {% load global_context %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block extracss %}
+  <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
+{% endblock %}
 
 <!-- Sidebar -->
 <div class="col-md-3 mb-5">
@@ -10,22 +14,22 @@
     {% endif %}
 
     <div class="mb-3">
-      <p class="sidebar-subtitle text-center text-secondary"><span>Latest Blog Posts</span></p>
+      <p class="sidebar-subtitle text-center"><span>Latest Blog Posts</span></p>
       {% latest_posts %}
     </div>
 
     <div>
-      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>Follow Me</span></p>
+      <p class="sidebar-subtitle text-center mt-4"><span>Follow Me</span></p>
       <div class="text-center">
-        <a class="p-2 link-secondary" href="#"><i class="bi bi-twitter"></i></a>
-        <a class="p-2 link-secondary" href="#"><i class="bi bi-instagram"></i></a>
-        <a class="p-2 link-secondary" href="#"><i class="bi bi-pinterest"></i></a>
-        <a class="p-2 link-secondary" href="#"><i class="bi bi-facebook"></i></a>
+        <a class="p-2" href="#"><i class="bi bi-twitter"></i></a>
+        <a class="p-2" href="#"><i class="bi bi-instagram"></i></a>
+        <a class="p-2" href="#"><i class="bi bi-pinterest"></i></a>
+        <a class="p-2" href="#"><i class="bi bi-facebook"></i></a>
       </div>
     </div>
 
     <div>
-      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>Archive</span></p>
+      <p class="sidebar-subtitle text-center mt-4"><span>Archive</span></p>
       <div class="dropdown text-center">
         <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="archiveDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,7 +53,7 @@
     </div>
 
     <div class="mb-3">
-      <p class="sidebar-subtitle text-center text-secondary mt-4"><span>About the project</span></p>
+      <p class="sidebar-subtitle text-center mt-4"><span>About the project</span></p>
       <ol class="list-unstyled text-center">
         <li><a href="https://github.com/hmignon/django-blog-project">GitHub</a></li>
       </ol>

@@ -3,11 +3,13 @@ from django.db import models
 
 from wagtail.fields import RichTextField
 
+from apps.home.models import AboutPage
+
 
 class User(AbstractUser):
     summary = RichTextField(null=True, blank=True, features=["bold", "italic", "link"])
-    bio = RichTextField(null=True, blank=True)
     picture = models.ImageField(upload_to="users/", default="img/default.jpg")
+    about = models.ForeignKey(AboutPage, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Subscriber(models.Model):

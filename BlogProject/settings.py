@@ -18,7 +18,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG', default=False)
 
 ALLOWED_HOSTS = []
 
@@ -173,6 +173,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 WAGTAIL_SITE_NAME = 'BlogProject'
 WAGTAIL_USER_EDIT_FORM = 'apps.users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'apps.users.forms.CustomUserCreationForm'
-WAGTAIL_USER_CUSTOM_FIELDS = ['picture', 'summary', 'bio']
+WAGTAIL_USER_CUSTOM_FIELDS = ['picture', 'summary', 'about']
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -1,11 +1,33 @@
-/* Home page */
+/* Carousel */
+
+.featured-container {
+    width: 100%;
+}
 
 .carousel-item img {
-    filter: brightness(95%);
+    filter: brightness(90%);
 }
 
 .carousel-caption {
-    text-shadow: black 1px 0 10px;
+    background: rgba(255, 255, 255, .9);
+    color: #14151a;
+    right: 12%;
+    bottom: 12%;
+    text-align: left;
+    max-width: 600px;
+    left: auto;
+    line-height: 1.95;
+    transition: background .3s ease-in-out;
+}
+
+.carousel-caption:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+.carousel-caption a h2, .carousel-caption a h2:hover {
+    color: #14151a;
+    font-size: 2.5rem;
+    text-decoration: none;
 }
 
 .display-4 {
@@ -13,13 +35,17 @@
     text-decoration: none;
 }
 
+
+/* Latest posts */
+
 .card {
     border-radius: 0;
     box-shadow: 3px 3px 5px #eeeeee;
+    min-height: 600px;
 }
 
 .card-title a {
-    color: #6a6a6a;
+    color: #14151a;
     text-decoration: none;
 }
 

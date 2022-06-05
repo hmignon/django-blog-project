@@ -1,11 +1,5 @@
 /* Blog posts */
 
-/*noinspection CssUnusedSymbol*/
-.richtext-image {
-    height: auto;
-    width: 100%;
-}
-
 .blog-post {
     margin-bottom: 2.5rem;
 }
@@ -39,4 +33,16 @@
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.richtext-image {
+    height: auto;
+    width: 100%;
+}
+
+
+/* Modal */
+
+.modal-content {
+    border-radius: 0;
 }

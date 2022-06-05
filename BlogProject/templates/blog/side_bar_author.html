@@ -1,11 +1,11 @@
 {% load wagtailcore_tags %}
 
-<p class="sidebar-subtitle text-center text-secondary"><span>About {{ owner.first_name }}</span></p>
+<p class="sidebar-subtitle text-center"><span>About {{ author.first_name }}</span></p>
 <div class="sidebar-section">
   <div class="mx-auto text-center mb-3">
-    <a href="{% url 'home:about' %}">
-      <img src="{{ owner.picture.url }}" width="100%" alt="{{ owner.username }} profile picture">
+    <a href="{{ author.about.url }}">
+      <img src="{{ author.picture.url }}" width="100%" alt="{{ author.username }} profile picture">
     </a>
   </div>
-  <p class="mb-4">{{ owner.summary | richtext }}</p>
+  <p class="mb-4">{{ author.summary | richtext }}</p>
 </div>

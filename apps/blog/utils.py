@@ -39,3 +39,7 @@ def cleanup_body_html(html):
         del img["style"]
 
     return str(soup)
+
+
+def summary_cleanup(text: str):
+    text.replace("&#x27;", "'")

@@ -20,11 +20,11 @@ class BlogPost(Page):
     # noinspection PyUnresolvedReferences
     cover_image = models.ForeignKey(
         "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        null=False,
+        blank=False,
+        on_delete=models.PROTECT,
         related_name="+",
-        help_text=("Choose a cover image for your blog post to feature on your home page and post category lists.")
+        help_text="Choose a cover image for your blog post to feature on your home page and post category lists."
     )
     summary = models.CharField(
         max_length=255,
@@ -50,13 +50,17 @@ class BlogPost(Page):
         verbose_name = "Blog post"
         verbose_name_plural = "Blog posts"
 
+    def __str__(self):
+        return f"Post #{self.id}: {self.title}"
+
     def save(self, *args, **kwargs):
-        self.reading_time = utils.get_reading_time(str(self.body))
-        self.body = utils.cleanup_body_html(str(self.body))
+        body_clean = re.sub(r'<.+?>', '', str(self.body))
+        self.reading_time = utils.get_reading_time(str(body_clean))
+        # self.body = utils.cleanup_body_html(str(self.body))
 
         if not self.summary:
             """If 'summary' field is left empty, use start of 'body' and remove html tags."""
-            self.summary = re.sub(r'<.+?>', '', str(self.body))[:255]
+            self.summary = body_clean[:255]
 
         super(BlogPost, self).save(*args, **kwargs)
 
@@ -67,12 +71,9 @@ class BlogPost(Page):
         ]
         return categories
 
-    def __str__(self):
-        return f"Post #{self.id}: {self.title}"
-
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["owner"] = self.owner
+        context["author"] = self.owner
 
         return context
 
@@ -96,7 +97,11 @@ class BlogPost(Page):
 @register_snippet
 class BlogCategory(models.Model):
     name = models.CharField(max_length=50)
-    slug = models.SlugField(default=' ')
+    slug = models.SlugField(default='', blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Blog category"
+        verbose_name_plural = "Blog categories"
 
     def __str__(self):
         return self.name
@@ -105,16 +110,16 @@ class BlogCategory(models.Model):
         self.slug = slugify(self.name)
         super(BlogCategory, self).save(*args, **kwargs)
 
-    class Meta:
-        verbose_name = "Blog category"
-        verbose_name_plural = "Blog categories"
-
 
 @register_snippet
 class SubCategory(models.Model):
     name = models.CharField(max_length=50)
-    slug = models.SlugField(default=' ')
+    slug = models.SlugField(default='', blank=True, null=True)
     category = models.ForeignKey("BlogCategory", on_delete=models.CASCADE, related_name="sub_categories")
+
+    class Meta:
+        verbose_name = "Sub category"
+        verbose_name_plural = "Sub categories"
 
     def __str__(self):
         return f"{self.name} ({self.category.name})"
@@ -122,10 +127,6 @@ class SubCategory(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(SubCategory, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name = "Sub category"
-        verbose_name_plural = "Sub categories"
 
 
 class PostCategoryRelationship(models.Model):
@@ -152,7 +153,7 @@ class Comment(models.Model):
     author_email = models.EmailField()
     content = models.CharField(max_length=1024)
     subscribe = models.BooleanField(default=False)
-    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="comments")
     date_created = models.DateTimeField(auto_now_add=True)
     moderated = models.BooleanField(default=False)
 
@@ -160,7 +161,7 @@ class Comment(models.Model):
 class Reply(models.Model):
     author_name = models.CharField(max_length=24)
     author_email = models.EmailField()
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="replies")
     content = models.CharField(max_length=1024)
     date_created = models.DateTimeField(auto_now_add=True)
     moderated = models.BooleanField(default=False)

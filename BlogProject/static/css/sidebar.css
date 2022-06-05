@@ -1,0 +1,52 @@
+/* Sidebar */
+
+.sidebar-section {
+    top: 3rem;
+}
+
+.sidebar-subtitle {
+    display: grid;
+    font-weight: 700;
+    grid-gap: 20px;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 13px 0;
+    text-transform: uppercase;
+}
+
+.sidebar-subtitle:after, .sidebar-subtitle:before {
+    border-bottom: .1rem solid #e81b1a;
+    content: " ";
+    display: block;
+}
+
+.latest-sidebar {
+    color: #14151a;
+    text-decoration: none;
+}
+
+.latest-sidebar:hover {
+    color: #e81b1a;
+    text-decoration: none;
+}
+
+.dropdown button {
+    color: #14151a;
+    border-color: #14151a;
+    width: 150px;
+}
+
+.dropdown button:hover {
+    color: #14151a;
+    border-color: #14151a;
+}
+
+.dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.archive-link {
+    color: #6a6a6a;
+    text-decoration: none;
+    font-size: .875rem;
+}

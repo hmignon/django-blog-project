@@ -1,0 +1,29 @@
+{% load crispy_forms_filters %}
+{% if self.comments %}
+
+  {% for comment in self.comments %}
+    <strong>{{ comment.author_name }}</strong>
+    <p>{{ comment.content }}</p>
+    <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+       aria-controls="collapseExample">
+      <i class="bi bi-reply"></i>
+    </a>
+    <div class="collapse" id="collapseExample">
+      {{ r_form | crispy }}
+      <div class="mt-3">
+        <button class="btn btn-red" type="submit">Post</button>
+      </div>
+    </div>
+    <hr>
+  {% endfor %}
+
+{% else %}
+  <p>No comments yet...</p>
+{% endif %}
+
+<h4>Write a comment:</h4>
+{% csrf_token %}
+{{ c_form | crispy }}
+<div class="mt-3 mb-3">
+  <button class="btn btn-red" type="submit">Post</button>
+</div>

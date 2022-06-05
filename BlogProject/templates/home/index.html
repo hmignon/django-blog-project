@@ -8,72 +8,105 @@
 {% block content %}
 
   <!-- Featured carousel -->
-  <div id="featuredCarousel" class="carousel slide mt-3" data-bs-ride="carousel" data-bs-interval="15000">
-    <div class="carousel-indicators">
+  <div class="featured-container">
+    <div id="featuredCarousel" class="carousel slide mt-0" data-bs-ride="carousel" data-bs-interval="15000">
+      <div class="carousel-indicators">
 
-      {% for post in featured %}
-        <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="{{ forloop.counter|add:"-1" }}"
-            {% if forloop.counter == 1 %} class="active" {% endif %}aria-current="true"
-                aria-label="Slide {{ forloop.counter }}"></button>
-      {% endfor %}
+        {% for post in featured %}
+          <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="{{ forloop.counter|add:"-1" }}"
+              {% if forloop.counter == 1 %} class="active" {% endif %}aria-current="true"
+                  aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
 
-    </div>
+      </div>
 
-    <div class="carousel-inner">
+      <div class="carousel-inner">
 
-      {% for post in featured %}
-        {% image post.cover_image fill-1500x600 as img %}
-        <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
-          <a href="{{ post.url }}"><img src="{{ img.url }}" class="d-block w-100" alt="{{ post.title }}"></a>
-          <div class="carousel-caption d-none d-md-block">
-            <a href="{{ post.url }}" class="text-white display-4"><h1>{{ post.title }}</h1></a>
-            <p>{{ post.summary }}...</p>
-          </div>
-        </div>
-      {% endfor %}
-
-    </div>
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
-  <!-- Latest section -->
-  <div class="row g-5 mt-1">
-    <div class="col-md-9 mb-5">
-      <h5 class="sidebar-subtitle text-center text-secondary mb-3"><span>Latest blog posts</span></h5>
-      <div class="row row-cols-1 row-cols-md-2 g-4">
-
-        {% for post in all_posts %}
-          <div class="col">
-            <div class="card">
-              {% if post.cover_image %}
-                {% image post.cover_image fill-500x350 as img %}
-                <a href="{{ post.url }}"><img src="{{ img.url }}" class="card-img-top" alt="{{ post.title }}"></a>
-              {% endif %}
-              <div class="card-body">
-                <h4 class="card-title mt-3"><a href="{{ post.url }}">{{ post.title }}</a></h4>
-                <p class="card-text">{{ post.summary }}...</p>
-                <p class="card-text mb-3"><small
-                    class="text-muted">{{ post.first_published_at | date:"F d, Y" }}</small>
-                </p>
-              </div>
+        {% for post in featured %}
+          {% image post.cover_image fill-1920x700 as img %}
+          <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
+            <a href="{{ post.url }}"><img src="{{ img.url }}" class="d-block w-100" alt="{{ post.title }}"></a>
+            <div class="carousel-caption text-left d-none d-sm-block px-md-5 py-5">
+              <a href="{{ post.url }}" class="display-4"><h2>{{ post.title | title }}</h2></a>
+              <p>{{ post.summary }}...</p>
+              <a class="btn btn-red float-end" href="{{ post.url }}">Read More</a>
             </div>
           </div>
         {% endfor %}
 
       </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-
-    {% include "side_bar.html" %}
-
   </div>
 
+  <!-- Latest section -->
+  <section class="pt-5 pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-6">
+          <h3 class="mb-4">Latest blog posts</h3>
+        </div>
+        <div class="col-6 text-right">
+          <a class="btn btn-primary mb-3 mr-1" href="#latestPostsCarousel" role="button" data-slide="prev">
+            <i class="fa fa-arrow-left"></i>
+          </a>
+          <a class="btn btn-primary mb-3 " href="#latestPostsCarousel" role="button" data-slide="next">
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="col-12">
+          <div id="latestPostsCarousel" class="carousel slide" data-ride="carousel">
+
+            {% for set in all_posts %}
+              <div class="carousel-inner">
+
+              {% if forloop.counter == 1 %}
+                <div class="carousel-item active">
+              {% else %}
+                <div class="carousel-item">
+              {% endif %}
+
+            <div class="row">
+
+              {% for post in set %}
+                <div class="col-md-4 mb-3">
+                  <div class="card">
+                    {% if post.cover_image %}
+                      {% image post.cover_image fill-500x350 as img %}
+                      <a href="{{ post.url }}"><img src="{{ img.url }}" class="card-img-top" alt="{{ post.title }}"></a>
+                    {% endif %}
+                    <div class="card-body">
+                      <p class="card-text mb-4"><small class="text-muted">
+                        {{ post.first_published_at | date:"F d, Y" }} -
+                        <a href="{{ post.owner.about.url }}"
+                           class="link-secondary">{{ post.owner.first_name }} {{ post.owner.last_name }}</a> -
+                        <small><i class="bi bi-clock"></i></small>
+                        {{ post.reading_time }} min</small>
+                      </p>
+                      <h4 class="card-title mt-3"><a href="{{ post.url }}">{{ post.title | title }}</a></h4>
+                      <p class="card-text">{{ post.summary }}...</p>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+
+            </div>
+            </div>
+            </div>
+            {% endfor %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
 
 {% endblock %}

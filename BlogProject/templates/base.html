@@ -21,7 +21,7 @@
   <link rel="icon" href="{% static 'img/favicon-16x16.png' %}"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Quicksand&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
   {% block extracss %}{% endblock %}
 
@@ -29,20 +29,37 @@
 
 <body>
 
-<!-- Header -->
-<header>
-  <div class="px-3 py-2">
-    <div class="container text-center mt-3 mb-3">
-      <a class="blog-header-logo text-decoration-none" href="{% url 'home:index' %}">
-        <img src="{% static 'img/site_logo.png' %}" width="100%" alt="site logo">
-      </a>
-    </div>
-  </div>
-</header>
-
+<!-- Navbar -->
 <div class="nav-container">
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home:index' %}">
+        <img src="{% static "img/logo.png" %}" alt="logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+        <div class="p-1">
+          <a class="p-2" href="#"><i class="bi bi-twitter"></i></a>
+          <a class="p-2" href="#"><i class="bi bi-instagram"></i></a>
+          <a class="p-2" href="#"><i class="bi bi-pinterest"></i></a>
+          <a class="p-2" href="#"><i class="bi bi-facebook"></i></a>
+          <a class="p-2" href="#"><i class="bi bi-linkedin"></i></a>
+          <a class="p-2" href="#"><i class="bi bi-github"></i></a>
+        </div>
 
-  <!-- Navbar -->
+        <form class="d-flex" role="search">
+          <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
+          <a class="p-1 text-decoration-none" type="submit"><i class="bi bi-search"></i></a>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
@@ -55,39 +72,25 @@
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
-          <div class="offcanvas-body">
+          <div class="d-md-flex d-block flex-row mx-md-auto mx-0">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item nav-main">
-                <a class="p-1 link-secondary text-decoration-none" href="{% url 'home:index' %}">HOME</a>
+                <a class="p-1 link-nav text-decoration-none" href="{% url 'home:index' %}">HOME</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="p-1 link-secondary text-decoration-none dropdown-toggle" id="aboutDropdown" role="button"
+                <a class="p-1 link-nav text-decoration-none dropdown-toggle" id="aboutDropdown" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">ABOUT<i
                     class="bi bi-chevron-down dropdown-icon"></i></a>
                 <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-                  <li><a class="dropdown-item" href="{% url 'home:contact' %}">Contact</a></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
                   {% about_pages %}
+                  <li><a class="dropdown-item" href="{% url 'home:contact' %}">Contact</a></li>
                 </ul>
               </li>
               {% blog_categories %}
               <li class="nav-item nav-main">
-                <a class="p-1 link-secondary text-decoration-none" href="{% url 'shop:list' %}">SHOP</a>
+                <a class="p-1 link-nav text-decoration-none" href="{% url 'shop:list' %}">SHOP</a>
               </li>
             </ul>
-            <div class="p-1">
-              <a class="p-2 link-secondary" href="#"><i class="bi bi-twitter"></i></a>
-              <a class="p-2 link-secondary" href="#"><i class="bi bi-instagram"></i></a>
-              <a class="p-2 link-secondary" href="#"><i class="bi bi-pinterest"></i></a>
-              <a class="p-2 link-secondary" href="#"><i class="bi bi-facebook"></i></a>
-            </div>
-
-            <form class="d-flex" role="search">
-              <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
-              <a class="p-1 link-secondary text-decoration-none" type="submit"><i class="bi bi-search"></i></a>
-            </form>
           </div>
         </div>
       </div>
@@ -96,16 +99,10 @@
   </div>
 </div>
 
-<main role="main" class="container">
-  <div class="row">
-    <div class="col-md-12">
 
-      <!-- Block Content -->
-      {% block content %}{% endblock %}
+<!-- Block Content -->
+{% block content %}{% endblock %}
 
-    </div>
-  </div>
-</main>
 
 <!-- Footer -->
 <footer class="blog-footer">
@@ -115,47 +112,43 @@
         <div class="col-2">
           <h5>Section</h5>
           <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+            <li class="nav-item mb-2"><a href="#" class="link-nav p-0">Home</a></li>
           </ul>
         </div>
 
         <div class="col-2">
           <h5>Section</h5>
           <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+            <li class="nav-item mb-2"><a href="#" class="link-nav p-0">FAQs</a></li>
           </ul>
         </div>
 
         <div class="col-2">
           <h5>Section</h5>
           <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+            <li class="nav-item mb-2"><a href="#" class="link-nav p-0">About</a></li>
           </ul>
         </div>
 
         <div class="col-4 offset-1">
           <form>
             <h5>Subscribe to our newsletter</h5>
-            <p>Monthly digest of whats new and exciting from us.</p>
             <div class="d-flex w-100 gap-2">
               <label for="newsletter1" class="visually-hidden">Email address</label>
               <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-              <button class="btn btn-primary" type="button">Subscribe</button>
+              <button class="btn btn-red" type="button">Subscribe</button>
             </div>
           </form>
         </div>
       </div>
 
-      <div class="d-flex justify-content-between py-4 my-4 border-top">
+      <div class="d-flex justify-content-between py-3 my-1">
         <p>&copy; 2022 Company, Inc. All rights reserved.</p>
         <ul class="list-unstyled d-flex">
-          <li><a class="p-2 link-secondary" href="#"><i class="bi bi-twitter"></i></a></li>
-          <li><a class="p-2 link-secondary" href="#"><i class="bi bi-instagram"></i></a></li>
-          <li><a class="p-2 link-secondary" href="#"><i class="bi bi-pinterest"></i></a></li>
-          <li><a class="p-2 link-secondary" href="#"><i class="bi bi-facebook"></i></a></li>
+          <li><a class="p-2 link-nav" href="#"><i class="bi bi-twitter"></i></a></li>
+          <li><a class="p-2 link-nav" href="#"><i class="bi bi-instagram"></i></a></li>
+          <li><a class="p-2 link-nav" href="#"><i class="bi bi-pinterest"></i></a></li>
+          <li><a class="p-2 link-nav" href="#"><i class="bi bi-facebook"></i></a></li>
         </ul>
       </div>
     </footer>
