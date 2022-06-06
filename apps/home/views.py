@@ -6,15 +6,12 @@ from .forms import ContactForm
 
 
 def index(request):
-    all_posts = BlogPost.objects.live().order_by('-first_published_at')[:18]
+    all_posts = BlogPost.objects.live().filter(featured=False).order_by('-first_published_at')[:9]
     featured_posts = BlogPost.objects.live().order_by('-first_published_at').filter(featured=True)[:4]
-
-    # Split queryset into groups of 3
-    posts = [all_posts[i:i + 3] for i in range(0, len(all_posts), 3)]
 
     context = {
         'featured': featured_posts,
-        'all_posts': posts,
+        'all_posts': all_posts,
         'owner': User.objects.first(),
         'title': 'Home'
     }

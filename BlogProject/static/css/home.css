@@ -34,21 +34,3 @@
     font-size: 2.5rem;
     text-decoration: none;
 }
-
-
-/* Latest posts */
-
-.card {
-    border-radius: 0;
-    box-shadow: 3px 3px 5px #eeeeee;
-    min-height: 600px;
-}
-
-.card-title a {
-    color: #14151a;
-    text-decoration: none;
-}
-
-.card img {
-    border-radius: 0;
-}
