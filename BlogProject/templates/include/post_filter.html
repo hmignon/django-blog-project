@@ -1,0 +1,45 @@
+<form class="row g-3">
+  <div class="col-12">
+    <label for="inputSearch" class="form-label">Search</label>
+    <input type="email" class="form-control" id="inputSearch" placeholder="Search by keyword">
+  </div>
+  <div class="col-md-6">
+    <label for="inputDateFrom" class="form-label">From</label>
+    <input type="date" class="form-control" id="inputDateFrom">
+  </div>
+  <div class="col-md-6">
+    <label for="inputDateTo" class="form-label">To</label>
+    <input type="date" class="form-control" id="inputDateTo">
+  </div>
+  <div class="col-md-4">
+    <label for="inputCategory" class="form-label">Category</label>
+    <select id="inputCategory" class="form-select">
+      <option selected>Choose...</option>
+      {% for category in categories %}
+        <option>{{ category.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label for="inputSub" class="form-label">Subcategory</label>
+    <select id="inputSub" class="form-select">
+      <option selected>Choose...</option>
+      {% for sub in subcategories %}
+        <option>{{ sub.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label for="inputAuthor" class="form-label">Author</label>
+    <select id="inputAuthor" class="form-select">
+      <option selected>Choose...</option>
+      {% for author in authors %}
+        <option>{{ author.first_name }} {{ author.last_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-red float-end">Apply filters</button>
+  </div>
+</form>

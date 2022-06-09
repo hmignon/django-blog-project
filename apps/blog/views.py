@@ -5,9 +5,11 @@ from .models import BlogCategory, BlogPost, PostCategoryRelationship, SubCategor
 
 def blog_list(request):
     posts = BlogPost.objects.live().order_by("-first_published_at")
+    categories = BlogCategory.objects.all()
 
     context = {
         "posts": posts,
+        "categories": categories,
         "title": "All posts"
     }
 

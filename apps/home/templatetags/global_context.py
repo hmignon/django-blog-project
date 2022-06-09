@@ -3,6 +3,7 @@ from django import template
 from apps.blog.forms import CommentForm, ReplyForm
 from apps.blog.models import BlogPost, BlogCategory, SubCategory
 from apps.home.models import AboutPage
+from apps.users.models import User
 
 register = template.Library()
 
@@ -36,7 +37,7 @@ def sub_categories(category):
     return {'subs': subs}
 
 
-@register.inclusion_tag('include/comment_form.html')
+@register.inclusion_tag("include/comment_form.html")
 def comment_form():
     c_form = CommentForm()
     r_form = ReplyForm()
@@ -44,4 +45,17 @@ def comment_form():
     return {
         "c_form": c_form,
         "r_form": r_form
+    }
+
+
+@register.inclusion_tag("include/post_filter.html")
+def post_filter():
+    categories = BlogCategory.objects.all()
+    subcategories = SubCategory.objects.all()
+    authors = User.objects.all()
+
+    return {
+        "categories": categories,
+        "subcategories": subcategories,
+        "authors": authors,
     }
