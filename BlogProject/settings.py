@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import django_heroku
 import environ
 from django.core.management.utils import get_random_secret_key
 
@@ -184,3 +185,5 @@ WAGTAIL_USER_CREATION_FORM = 'apps.users.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = ['picture', 'summary', 'about']
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+django_heroku.settings(locals())
